@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>@00fadevfx // EDIT DATABASE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #080808; --bg2: #111; --bg3: #161616;
+    --accent-soft: rgba(255,255,255,0.05);
+    --border: rgba(255,255,255,0.1); --border-bright: rgba(255,255,255,0.25);
+    --green: #aaffaa; --red: #ff6666; --gold: #ffe066; --blue: #88ccff;
+    --text-dim: rgba(255,255,255,0.3); --text-mid: rgba(255,255,255,0.6);
+  }
+  body { background: var(--bg); color: #fff; font-family: 'Share Tech Mono', monospace; min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px); pointer-events: none; z-index: 1000; }
+
+  /* NAV */
+  .topnav { position: sticky; top: 0; background: rgba(8,8,8,0.97); border-bottom: 1px solid var(--border); padding: 0 16px; height: 48px; display: flex; align-items: center; gap: 12px; z-index: 800; backdrop-filter: blur(10px); }
+  .nav-logo { font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: #fff; flex-shrink: 0; }
+  .nav-handle { font-size: 9px; letter-spacing: 2px; color: var(--text-dim); flex: 1; }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab { padding: 5px 10px; font-size: 8px; letter-spacing: 2px; color: var(--text-dim); cursor: pointer; border: 1px solid transparent; transition: all 0.2s; font-family: 'Rajdhani', sans-serif; font-weight: 600; }
+  .nav-tab.active, .nav-tab:hover { color: #fff; border-color: var(--border-bright); background: var(--accent-soft); }
+  .admin-btn { padding: 5px 10px; font-size: 8px; letter-spacing: 2px; color: var(--text-dim); cursor: pointer; border: 1px solid var(--border); background: transparent; font-family: 'Rajdhani', sans-serif; font-weight: 600; transition: all 0.2s; }
+  .admin-btn:hover { color: var(--gold); border-color: var(--gold); }
+  .admin-btn.active { color: var(--gold); border-color: var(--gold); background: rgba(255,224,102,0.08); }
+
+  /* ANNOUNCEMENT BANNER */
+  .announcement { background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border); padding: 10px 16px; display: none; align-items: center; gap: 10px; }
+  .announcement.visible { display: flex; }
+  .ann-icon { font-size: 14px; flex-shrink: 0; }
+  .ann-text { font-size: 10px; letter-spacing: 1px; color: #fff; flex: 1; font-family: 'Rajdhani', sans-serif; font-weight: 600; }
+  .ann-tag { font-size: 7px; letter-spacing: 3px; color: var(--gold); font-family: 'Rajdhani', sans-serif; flex-shrink: 0; border: 1px solid var(--gold); padding: 2px 6px; }
+
+  /* PAGES */
+  .page { display: none; padding: 16px; max-width: 700px; margin: 0 auto; }
+  .page.active { display: block; animation: fadeIn 0.3s ease; }
+  #page-admin { max-width: 700px; }
+
+  /* HOME STATS BAR */
+  .home-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px; }
+  .home-stat { border: 1px solid var(--border); background: var(--bg3); padding: 14px; text-align: center; }
+  .home-stat-val { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+  .home-stat-label { font-size: 7px; letter-spacing: 3px; color: var(--text-dim); font-family: 'Rajdhani', sans-serif; }
+
+  /* RECENTLY ADDED */
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .section-title { font-size: 9px; letter-spacing: 4px; color: var(--text-dim); font-family: 'Rajdhani', sans-serif; }
+  .section-divider { height: 1px; background: var(--border); margin-bottom: 16px; }
+  .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 8px; margin-bottom: 24px; }
+  .recent-item { border: 1px solid rgba(255,255,255,0.12); background: var(--bg3); padding: 12px 10px; cursor: pointer; transition: all 0.18s; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; position: relative; }
+  .recent-item:hover { border-color: var(--border-bright); background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+  .recent-item:active { transform: scale(0.97); }
+  .recent-icon { font-size: 22px; }
+  .recent-name { font-size: 9px; letter-spacing: 1px; color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+  .recent-sub { font-size: 7px; letter-spacing: 1px; color: var(--text-dim); }
+  .new-badge { position: absolute; top: -6px; right: -6px; background: var(--gold); color: #000; font-size: 6px; letter-spacing: 1px; padding: 2px 5px; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+
+  /* SEARCH */
+  .search-wrap { position: relative; margin-bottom: 16px; }
+  .search-input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 10px 14px 10px 36px; outline: none; transition: border-color 0.2s; }
+  .search-input:focus { border-color: var(--border-bright); }
+  .search-input::placeholder { color: var(--text-dim); }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 13px; pointer-events: none; }
+  .search-results { margin-bottom: 16px; }
+  .search-result-item { border: 1px solid var(--border); background: var(--bg3); padding: 10px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.18s; }
+  .search-result-item:hover { border-color: var(--border-bright); background: rgba(255,255,255,0.06); }
+  .sr-icon { font-size: 18px; flex-shrink: 0; }
+  .sr-info { flex: 1; }
+  .sr-name { font-size: 11px; letter-spacing: 1px; color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+  .sr-path { font-size: 8px; letter-spacing: 1px; color: var(--text-dim); margin-top: 2px; }
+  .sr-status { font-size: 7px; letter-spacing: 2px; font-family: 'Rajdhani', sans-serif; flex-shrink: 0; }
+
+  /* BREADCRUMB */
+  .breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; font-size: 9px; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 14px; }
+  .breadcrumb span { cursor: pointer; transition: color 0.2s; }
+  .breadcrumb span:hover, .breadcrumb span.active { color: #fff; }
+  .breadcrumb .sep { color: var(--border); }
+
+  /* FOLDER */
+  .folder-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+  .folder-title { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; letter-spacing: 3px; }
+  .folder-meta { font-size: 8px; letter-spacing: 1px; color: var(--text-dim); }
+
+  /* FILE GRID */
+  .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+  .file-item { border: 1px solid var(--border); background: var(--accent-soft); padding: 14px 10px; cursor: pointer; transition: all 0.18s; display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; position: relative; -webkit-tap-highlight-color: transparent; }
+  .file-item:active { transform: scale(0.97); }
+  .file-item:hover { border-color: var(--border-bright); background: rgba(255,255,255,0.08); }
+  .file-item.locked { opacity: 0.35; cursor: not-allowed; }
+  .file-item.locked:hover { border-color: var(--border); background: var(--accent-soft); transform: none; }
+  .file-item.complete { border-color: rgba(170,255,170,0.2); }
+  .file-item.complete:hover { border-color: rgba(170,255,170,0.5); }
+  .file-item.coming-soon { border-color: rgba(255,224,102,0.25); opacity: 0.75; }
+  .file-item.coming-soon:hover { border-color: rgba(255,224,102,0.5); opacity: 1; }
+  .file-icon { font-size: 26px; }
+  .file-name { font-size: 9px; letter-spacing: 1px; color: var(--text-mid); font-family: 'Rajdhani', sans-serif; font-weight: 600; line-height: 1.3; }
+  .file-item:hover .file-name { color: #fff; }
+  .file-badge { font-size: 7px; letter-spacing: 1px; font-family: 'Rajdhani', sans-serif; font-weight: 600; }
+  .badge-done { color: var(--green); } .badge-lock { color: var(--red); } .badge-soon { color: var(--gold); }
+  .corner-dot { position: absolute; top: 5px; right: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px var(--green); }
+  .corner-dot.soon { background: var(--gold); box-shadow: 0 0 5px var(--gold); animation: blink 1.5s infinite; }
+
+  /* CHAR PANEL */
+  .char-panel { animation: fadeIn 0.3s ease; }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 9px; letter-spacing: 2px; color: var(--text-dim); cursor: pointer; margin-bottom: 16px; padding: 6px 0; transition: color 0.2s; }
+  .back-btn:hover { color: #fff; }
+  .panel-card { border: 1px solid var(--border); background: var(--bg3); padding: 20px; }
+  .panel-top { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 16px; }
+  .panel-icon-wrap { width: 80px; height: 80px; flex-shrink: 0; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 36px; background: var(--accent-soft); }
+  .panel-info { flex: 1; min-width: 160px; }
+  .panel-tag { font-size: 7px; letter-spacing: 4px; color: var(--text-dim); margin-bottom: 4px; font-family: 'Rajdhani', sans-serif; }
+  .panel-name { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900; letter-spacing: 3px; margin-bottom: 2px; }
+  .panel-title { font-size: 9px; letter-spacing: 3px; color: var(--text-mid); font-family: 'Rajdhani', sans-serif; }
+  .panel-divider { height: 1px; background: var(--border); margin: 12px 0; }
+  .panel-stat { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 9px; }
+  .stat-k { color: var(--text-dim); letter-spacing: 1px; }
+  .stat-v { color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 10px; letter-spacing: 1px; }
+  .panel-verdict { font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 700; letter-spacing: 2px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); animation: verdictFlick 0.8s ease forwards; }
+  .panel-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .watch-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #fff; color: #000; font-family: 'Orbitron', monospace; font-size: 10px; font-weight: 900; letter-spacing: 3px; text-decoration: none; transition: all 0.2s; }
+  .watch-btn:hover { background: #ddd; transform: translateY(-1px); }
+  .share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; background: transparent; color: var(--text-dim); border: 1px solid var(--border); font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
+  .share-btn:hover { color: #fff; border-color: var(--border-bright); }
+
+  /* SUGGEST */
+  .suggest-form { border: 1px solid var(--border); background: var(--bg3); padding: 18px; margin-bottom: 20px; }
+  .suggest-form h2 { font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 3px; margin-bottom: 14px; }
+  .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .form-input { flex: 1; min-width: 120px; background: var(--bg2); border: 1px solid var(--border); color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 10px 12px; outline: none; transition: border-color 0.2s; }
+  .form-input:focus { border-color: var(--border-bright); }
+  .form-input::placeholder { color: var(--text-dim); }
+  .submit-btn { background: #fff; color: #000; border: none; padding: 10px 20px; font-family: 'Orbitron', monospace; font-size: 9px; letter-spacing: 2px; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .submit-btn:hover { background: #ddd; }
+  .form-note { font-size: 8px; letter-spacing: 1px; color: var(--text-dim); margin-top: 10px; }
+  .suggest-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .suggest-title { font-size: 9px; letter-spacing: 3px; color: var(--text-dim); font-family: 'Rajdhani', sans-serif; }
+  .suggest-count { font-size: 8px; letter-spacing: 2px; color: var(--text-dim); }
+  .suggest-item { border: 1px solid var(--border); background: var(--bg3); padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  .suggest-item.status-inprogress { border-left: 3px solid var(--gold); }
+  .suggest-item.status-completed { border-left: 3px solid var(--green); opacity: 0.6; }
+  .vote-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; }
+  .vote-btn { width: 28px; height: 28px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .vote-btn:hover, .vote-btn.voted { border-color: #fff; color: #fff; background: rgba(255,255,255,0.1); }
+  .vote-count { font-size: 11px; font-weight: 700; color: #fff; }
+  .suggest-info { flex: 1; min-width: 0; }
+  .suggest-char { font-size: 12px; letter-spacing: 2px; color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+  .suggest-anime { font-size: 9px; letter-spacing: 1px; color: var(--text-dim); margin-top: 2px; }
+  .s-badge { font-size: 7px; letter-spacing: 2px; padding: 3px 8px; font-family: 'Rajdhani', sans-serif; font-weight: 600; flex-shrink: 0; border: 1px solid; }
+  .s-pending { color: var(--text-dim); border-color: var(--border); }
+  .s-inprogress { color: var(--gold); border-color: var(--gold); background: rgba(255,224,102,0.08); }
+  .s-completed { color: var(--green); border-color: var(--green); background: rgba(170,255,170,0.08); }
+
+  /* ADMIN */
+  .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .admin-title { font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 900; letter-spacing: 3px; color: var(--gold); }
+  .admin-logout { font-size: 8px; letter-spacing: 2px; color: var(--text-dim); cursor: pointer; border: 1px solid var(--border); padding: 5px 10px; font-family: 'Rajdhani', sans-serif; transition: all 0.2s; }
+  .admin-logout:hover { color: var(--red); border-color: var(--red); }
+  .admin-tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+  .admin-tab { padding: 7px 14px; font-size: 8px; letter-spacing: 2px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 600; transition: all 0.2s; }
+  .admin-tab.active { color: var(--gold); border-color: var(--gold); background: rgba(255,224,102,0.06); }
+  .admin-tab:hover:not(.active) { color: #fff; border-color: var(--border-bright); }
+  .admin-panel { display: none; }
+  .admin-panel.active { display: block; animation: fadeIn 0.2s ease; }
+  .stat-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-bottom: 24px; }
+  .stat-card { border: 1px solid var(--border); background: var(--bg3); padding: 14px; }
+  .stat-card-val { font-family: 'Orbitron', monospace; font-size: 28px; font-weight: 900; margin-bottom: 4px; }
+  .stat-card-label { font-size: 7px; letter-spacing: 3px; color: var(--text-dim); font-family: 'Rajdhani', sans-serif; }
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .filter-btn { padding: 5px 12px; font-size: 8px; letter-spacing: 2px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 600; transition: all 0.2s; }
+  .filter-btn.active, .filter-btn:hover { color: #fff; border-color: var(--border-bright); background: var(--accent-soft); }
+  .admin-item { border: 1px solid var(--border); background: var(--bg3); padding: 14px; margin-bottom: 8px; }
+  .admin-item.status-inprogress { border-left: 3px solid var(--gold); }
+  .admin-item.status-completed { border-left: 3px solid var(--green); }
+  .admin-item-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .admin-votes { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900; min-width: 36px; text-align: center; flex-shrink: 0; }
+  .admin-item-info { flex: 1; min-width: 120px; }
+  .admin-char-name { font-size: 13px; letter-spacing: 2px; color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+  .admin-anime-name { font-size: 9px; letter-spacing: 1px; color: var(--text-dim); margin-top: 2px; }
+  .admin-controls { display: flex; gap: 5px; flex-wrap: wrap; }
+  .admin-ctrl { padding: 6px 12px; font-size: 8px; letter-spacing: 1px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 600; transition: all 0.2s; }
+  .ctrl-prog { color: var(--gold); border-color: rgba(255,224,102,0.4); } .ctrl-prog:hover { background: rgba(255,224,102,0.08); border-color: var(--gold); }
+  .ctrl-done { color: var(--green); border-color: rgba(170,255,170,0.4); } .ctrl-done:hover { background: rgba(170,255,170,0.06); border-color: var(--green); }
+  .ctrl-reset:hover { color: #fff; border-color: var(--border-bright); }
+  .ctrl-del { color: var(--red); border-color: rgba(255,102,102,0.4); } .ctrl-del:hover { background: rgba(255,102,102,0.06); border-color: var(--red); }
+
+  /* ANNOUNCEMENT ADMIN */
+  .ann-form { border: 1px solid var(--border); background: var(--bg3); padding: 16px; margin-bottom: 12px; }
+  .ann-form h3 { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 3px; margin-bottom: 12px; color: var(--gold); }
+  .ann-preview { border: 1px solid rgba(255,224,102,0.3); background: rgba(255,224,102,0.04); padding: 10px 14px; margin-top: 10px; font-size: 10px; color: #fff; font-family: 'Rajdhani', sans-serif; display: none; }
+  .ann-preview.visible { display: block; }
+
+  /* ADD FORMS */
+  .form-card { border: 1px solid var(--border); background: var(--bg3); padding: 18px; margin-bottom: 12px; }
+  .form-card h3 { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 3px; color: #fff; margin-bottom: 14px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+  .form-grid.full { grid-template-columns: 1fr; }
+  .field-label { font-size: 7px; letter-spacing: 3px; color: var(--text-dim); margin-bottom: 4px; font-family: 'Rajdhani', sans-serif; }
+  .field-input { width: 100%; background: var(--bg2); border: 1px solid var(--border); color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 10px; padding: 8px 10px; outline: none; transition: border-color 0.2s; }
+  .field-input:focus { border-color: var(--border-bright); }
+  .field-input::placeholder { color: var(--text-dim); }
+  .field-select { width: 100%; background: var(--bg2); border: 1px solid var(--border); color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 10px; padding: 8px 10px; outline: none; cursor: pointer; }
+  .field-select option { background: var(--bg2); }
+  .form-btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .btn-primary { background: #fff; color: #000; border: none; padding: 9px 20px; font-family: 'Orbitron', monospace; font-size: 8px; letter-spacing: 2px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .btn-primary:hover { background: #ddd; }
+  .btn-secondary { background: transparent; color: var(--text-dim); border: 1px solid var(--border); padding: 9px 16px; font-family: 'Rajdhani', sans-serif; font-size: 9px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
+  .btn-secondary:hover { color: #fff; border-color: var(--border-bright); }
+  .btn-danger { background: transparent; color: var(--red); border: 1px solid rgba(255,102,102,0.4); padding: 9px 16px; font-family: 'Rajdhani', sans-serif; font-size: 9px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
+  .btn-danger:hover { background: rgba(255,102,102,0.08); border-color: var(--red); }
+
+  /* MANAGE LIST */
+  .db-item { border: 1px solid var(--border); background: var(--bg3); padding: 12px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  .db-item-icon { font-size: 18px; flex-shrink: 0; }
+  .db-item-info { flex: 1; min-width: 0; }
+  .db-item-name { font-size: 11px; letter-spacing: 1px; color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+  .db-item-sub { font-size: 8px; letter-spacing: 1px; color: var(--text-dim); margin-top: 2px; }
+  .db-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
+  .act-btn { padding: 4px 10px; font-size: 7px; letter-spacing: 1px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); cursor: pointer; font-family: 'Rajdhani', sans-serif; transition: all 0.2s; }
+  .act-edit { color: #fff; border-color: var(--border-bright); } .act-edit:hover { background: var(--accent-soft); }
+  .act-del { color: var(--red); border-color: rgba(255,102,102,0.3); } .act-del:hover { background: rgba(255,102,102,0.08); border-color: var(--red); }
+
+  /* STATS BUILDER */
+  .stats-builder { border: 1px solid var(--border); padding: 10px; margin-bottom: 8px; }
+  .stat-row-builder { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+  .stat-row-builder .field-input { flex: 1; }
+  .remove-stat { width: 28px; height: 28px; background: transparent; border: 1px solid rgba(255,102,102,0.4); color: var(--red); cursor: pointer; font-size: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .add-stat-btn { font-size: 8px; letter-spacing: 2px; color: var(--text-dim); background: transparent; border: 1px dashed var(--border); padding: 6px 12px; cursor: pointer; font-family: 'Rajdhani', sans-serif; transition: all 0.2s; width: 100%; margin-top: 4px; }
+  .add-stat-btn:hover { color: #fff; border-color: var(--border-bright); }
+
+  /* MODAL */
+  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 2000; align-items: center; justify-content: center; }
+  .modal-bg.visible { display: flex; }
+  .modal { background: var(--bg2); border: 1px solid var(--border-bright); padding: 28px 24px; width: min(320px, 90vw); animation: fadeIn 0.2s ease; }
+  .modal h2 { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: 3px; margin-bottom: 16px; color: var(--gold); }
+  .modal-input { width: 100%; background: var(--bg); border: 1px solid var(--border); color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 14px; padding: 10px 12px; outline: none; margin-bottom: 10px; letter-spacing: 4px; }
+  .modal-input:focus { border-color: var(--border-bright); }
+  .modal-row { display: flex; gap: 8px; }
+  .modal-btn { flex: 1; padding: 10px; font-family: 'Orbitron', monospace; font-size: 9px; letter-spacing: 2px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-mid); transition: all 0.2s; }
+  .modal-btn.confirm { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
+  .modal-err { font-size: 9px; color: var(--red); margin-bottom: 8px; display: none; letter-spacing: 1px; }
+
+  .empty { text-align: center; padding: 40px 20px; color: var(--text-dim); font-size: 10px; letter-spacing: 2px; line-height: 2.2; }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px); background: #fff; color: #000; font-family: 'Orbitron', monospace; font-size: 9px; letter-spacing: 2px; padding: 10px 20px; z-index: 3000; transition: transform 0.3s ease; white-space: nowrap; pointer-events: none; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes verdictFlick { 0%{opacity:0} 20%{opacity:1} 35%{opacity:0.4} 55%{opacity:1} 70%{opacity:0.6} 100%{opacity:1} }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  @media (max-width: 480px) {
+    .nav-handle { display: none; }
+    .nav-tab, .admin-btn { padding: 5px 7px; font-size: 7px; }
+    .file-grid { grid-template-columns: repeat(auto-fill, minmax(100px,1fr)); gap: 6px; }
+    .page { padding: 10px; }
+    .stat-cards { grid-template-columns: repeat(2,1fr); }
+    .form-grid { grid-template-columns: 1fr; }
+    .home-stats { grid-template-columns: repeat(3,1fr); gap: 6px; }
+    .home-stat-val { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-logo">FADE.DB</div>
+  <div class="nav-handle">@00fadevfx</div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" id="tab-db" onclick="showPage('db')">DATABASE</div>
+    <div class="nav-tab" id="tab-suggest" onclick="showPage('suggest')">SUGGEST</div>
+  </div>
+  <button class="admin-btn" id="adminBtn" onclick="handleAdminClick()">ADMIN</button>
+</div>
+
+<!-- ANNOUNCEMENT BANNER -->
+<div class="announcement" id="ann-banner">
+  <div class="ann-tag">ANNOUNCEMENT</div>
+  <div class="ann-icon">📢</div>
+  <div class="ann-text" id="ann-text"></div>
+</div>
+
+<!-- DATABASE -->
+<div class="page active" id="page-db">
+  <!-- HOME VIEW (shown when at root) -->
+  <div id="home-view">
+    <div class="home-stats" id="home-stats"></div>
+    <div class="search-wrap">
+      <div class="search-icon">⌕</div>
+      <input class="search-input" id="search-input" placeholder="SEARCH CHARACTERS..." oninput="handleSearch(this.value)"/>
+    </div>
+    <div class="search-results" id="search-results" style="display:none"></div>
+    <div id="recently-added-section">
+      <div class="section-header">
+        <div class="section-title">// RECENTLY ADDED</div>
+      </div>
+      <div class="section-divider"></div>
+      <div class="recent-grid" id="recent-grid"></div>
+      <div class="section-header">
+        <div class="section-title">// BROWSE ALL</div>
+      </div>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+  <div class="breadcrumb" id="breadcrumb"></div>
+  <div id="db-content"></div>
+</div>
+
+<!-- SUGGEST -->
+<div class="page" id="page-suggest">
+  <div class="suggest-form">
+    <h2>// SUGGEST A CHARACTER</h2>
+    <div class="form-row">
+      <input class="form-input" id="inp-char" placeholder="CHARACTER NAME" maxlength="40"/>
+      <input class="form-input" id="inp-anime" placeholder="ANIME / SERIES" maxlength="40"/>
+    </div>
+    <button class="submit-btn" onclick="submitSuggestion()">SUBMIT</button>
+    <div class="form-note">Sorted by most upvoted. One vote per device.</div>
+  </div>
+  <div class="suggest-header">
+    <div class="suggest-title">// ALL SUGGESTIONS</div>
+    <div class="suggest-count" id="suggest-count"></div>
+  </div>
+  <div id="suggest-list"></div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+  <div style="max-width:700px;margin:0 auto;padding:16px">
+    <div class="admin-header">
+      <div class="admin-title">// ADMIN DASHBOARD</div>
+      <div class="admin-logout" onclick="logout()">LOG OUT</div>
+    </div>
+    <div class="admin-tabs">
+      <div class="admin-tab active" onclick="switchAdminTab('suggestions',this)">SUGGESTIONS</div>
+      <div class="admin-tab" onclick="switchAdminTab('manage',this)">MANAGE DB</div>
+      <div class="admin-tab" onclick="switchAdminTab('add',this)">ADD NEW</div>
+      <div class="admin-tab" onclick="switchAdminTab('announce',this)">ANNOUNCEMENT</div>
+    </div>
+
+    <!-- SUGGESTIONS -->
+    <div class="admin-panel active" id="panel-suggestions">
+      <div class="stat-cards">
+        <div class="stat-card"><div class="stat-card-val" style="color:#fff" id="stat-total">0</div><div class="stat-card-label">TOTAL</div></div>
+        <div class="stat-card"><div class="stat-card-val" style="color:var(--red)" id="stat-pending">0</div><div class="stat-card-label">PENDING</div></div>
+        <div class="stat-card"><div class="stat-card-val" style="color:var(--gold)" id="stat-wip">0</div><div class="stat-card-label">IN PROGRESS</div></div>
+        <div class="stat-card"><div class="stat-card-val" style="color:var(--green)" id="stat-done">0</div><div class="stat-card-label">COMPLETED</div></div>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-btn active" onclick="setFilter('all',this)">ALL</div>
+        <div class="filter-btn" onclick="setFilter('pending',this)">PENDING</div>
+        <div class="filter-btn" onclick="setFilter('inprogress',this)">IN PROGRESS</div>
+        <div class="filter-btn" onclick="setFilter('completed',this)">COMPLETED</div>
+      </div>
+      <div id="admin-list"></div>
+    </div>
+
+    <!-- MANAGE -->
+    <div class="admin-panel" id="panel-manage">
+      <div id="manage-content"></div>
+    </div>
+
+    <!-- ADD NEW -->
+    <div class="admin-panel" id="panel-add">
+      <div class="form-card">
+        <h3>// ADD FOLDER</h3>
+        <div class="form-grid">
+          <div><div class="field-label">NAME</div><input class="field-input" id="new-folder-name" placeholder="E.G. ATTACK ON TITAN"/></div>
+          <div><div class="field-label">ICON</div><input class="field-input" id="new-folder-icon" placeholder="📁" maxlength="4"/></div>
+        </div>
+        <div class="form-grid full">
+          <div><div class="field-label">PARENT FOLDER</div><select class="field-select" id="new-folder-parent"></select></div>
+        </div>
+        <div class="form-btn-row"><button class="btn-primary" onclick="addFolder()">ADD FOLDER</button></div>
+      </div>
+
+      <div class="form-card">
+        <h3>// ADD CHARACTER</h3>
+        <div class="form-grid">
+          <div><div class="field-label">NAME</div><input class="field-input" id="new-char-name" placeholder="E.G. GOJO SATORU"/></div>
+          <div><div class="field-label">ICON</div><input class="field-input" id="new-char-icon" placeholder="⚡" maxlength="4"/></div>
+        </div>
+        <div class="form-grid">
+          <div><div class="field-label">TITLE / RANK</div><input class="field-input" id="new-char-title" placeholder="E.G. LIMITLESS SORCERER"/></div>
+          <div><div class="field-label">STATUS</div>
+            <select class="field-select" id="new-char-status">
+              <option value="complete">COMPLETE</option>
+              <option value="coming-soon">COMING SOON</option>
+              <option value="locked">LOCKED</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid full">
+          <div><div class="field-label">PARENT FOLDER</div><select class="field-select" id="new-char-parent"></select></div>
+        </div>
+        <div class="form-grid full">
+          <div><div class="field-label">TIKTOK LINK</div><input class="field-input" id="new-char-tiktok" placeholder="https://tiktok.com/@00fadevfx/video/..."/></div>
+        </div>
+        <div class="form-grid full">
+          <div><div class="field-label">VERDICT</div><input class="field-input" id="new-char-verdict" placeholder="COMBAT VERDICT: ..."/></div>
+        </div>
+        <div class="field-label" style="margin-top:10px;margin-bottom:6px">STATS</div>
+        <div class="stats-builder" id="new-stats-builder"></div>
+        <button class="add-stat-btn" onclick="addStatRow('new-stats-builder')">+ ADD STAT</button>
+        <div class="form-btn-row"><button class="btn-primary" onclick="addCharacter()">ADD CHARACTER</button></div>
+      </div>
+    </div>
+
+    <!-- ANNOUNCEMENT -->
+    <div class="admin-panel" id="panel-announce">
+      <div class="ann-form">
+        <h3>// ANNOUNCEMENT BANNER</h3>
+        <div class="form-grid full">
+          <div><div class="field-label">MESSAGE</div><input class="field-input" id="ann-input" placeholder="E.G. GIYU EDIT DROPPING TONIGHT 🔥" maxlength="100" oninput="previewAnn(this.value)"/></div>
+        </div>
+        <div class="ann-preview" id="ann-preview"></div>
+        <div class="form-btn-row">
+          <button class="btn-primary" onclick="setAnnouncement()">PUBLISH</button>
+          <button class="btn-danger" onclick="clearAnnouncement()">CLEAR BANNER</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h2>// ADMIN ACCESS</h2>
+    <div class="modal-err" id="modal-err">INCORRECT PASSWORD</div>
+    <input class="modal-input" id="modal-pw" type="password" placeholder="••••••••" maxlength="20" onkeydown="if(event.key==='Enter')checkPassword()"/>
+    <div class="modal-row">
+      <button class="modal-btn" onclick="closeModal()">CANCEL</button>
+      <button class="modal-btn confirm" onclick="checkPassword()">CONFIRM</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-bg" id="edit-modal">
+  <div class="modal" style="width:min(500px,95vw);max-height:90vh;overflow-y:auto">
+    <h2 id="edit-modal-title">// EDIT</h2>
+    <div id="edit-modal-body"></div>
+    <div class="modal-row" style="margin-top:14px">
+      <button class="modal-btn" onclick="closeEditModal()">CANCEL</button>
+      <button class="modal-btn confirm" id="edit-modal-confirm">SAVE</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PASSWORD = 'Me627663?';
+const DB_KEY = 'fadevfx_db_v5';
+const SUGG_KEY = 'fadevfx_suggestions';
+const VOTED_KEY = 'fadevfx_voted';
+const ANN_KEY = 'fadevfx_announcement';
+
+const DEFAULT_DB = {
+  id:'root',name:'ROOT',type:'folder',
+  children:[{
+    id:'anime',name:'ANIME',type:'folder',icon:'📁',
+    children:[
+      {id:'7ds',name:'SEVEN DEADLY SINS',type:'folder',icon:'📁',children:[
+        {id:'meliodas',name:'MELIODAS',type:'file',status:'complete',icon:'⚔️',title:'DRAGON SIN OF WRATH',tiktok:'',stats:{POWER:'DEMON KING VESSEL',ABILITY:'FULL COUNTER',RANK:'CAPTAIN'},verdict:'COMBAT VERDICT: LIMITLESS WRATH.',addedAt:Date.now()-86400000*6},
+        {id:'diane',name:'DIANE',type:'file',status:'complete',icon:'🌍',title:'SERPENT SIN OF ENVY',tiktok:'',stats:{POWER:'CREATION',ABILITY:'GIDEON HAMMER',RANK:'GIANT WARRIOR'},verdict:'COMBAT VERDICT: THE EARTH TREMBLES.',addedAt:Date.now()-86400000*5},
+        {id:'ban',name:'BAN',type:'file',status:'complete',icon:'🦊',title:'FOX SIN OF GREED',tiktok:'',stats:{POWER:'SNATCH',ABILITY:'HUNTER FEST',RANK:'IMMORTAL'},verdict:'COMBAT VERDICT: CANNOT BE KILLED.',addedAt:Date.now()-86400000*5},
+        {id:'king',name:'KING',type:'file',status:'complete',icon:'🌸',title:'GRIZZLY SIN OF SLOTH',tiktok:'',stats:{POWER:'DISASTER',ABILITY:'CHASTIEFOL',RANK:'FAIRY KING'},verdict:'COMBAT VERDICT: NATURE UNLEASHED.',addedAt:Date.now()-86400000*4},
+        {id:'gowther',name:'GOWTHER',type:'file',status:'complete',icon:'🏹',title:'GOAT SIN OF LUST',tiktok:'',stats:{POWER:'INVASION',ABILITY:'JACK THE PUNISHMENT',RANK:'DOLL'},verdict:'COMBAT VERDICT: MIND IS THE WEAPON.',addedAt:Date.now()-86400000*3},
+        {id:'merlin',name:'MERLIN',type:'file',status:'complete',icon:'🔮',title:'BOAR SIN OF GLUTTONY',tiktok:'',stats:{POWER:'INFINITY',ABILITY:'ABSOLUTE CANCEL',RANK:'GREATEST MAGE'},verdict:'COMBAT VERDICT: BEYOND COMPREHENSION.',addedAt:Date.now()-86400000*2},
+        {id:'escanor',name:'ESCANOR',type:'file',status:'complete',icon:'☀️',title:'LION SIN OF PRIDE',tiktok:'',stats:{POWER:'SUNSHINE',ABILITY:'THE ONE',RANK:'THE STRONGEST'},verdict:'COMBAT VERDICT: WHO DECIDED THAT?',addedAt:Date.now()-86400000*1},
+      ]},
+      {id:'ds',name:'DEMON SLAYER',type:'folder',icon:'📁',children:[
+        {id:'demons',name:'DEMONS',type:'folder',icon:'📁',children:[
+          {id:'muzan',name:'MUZAN',type:'file',status:'complete',icon:'🌙',title:'DEMON KING / PROGENITOR',tiktok:'',stats:{POWER:'INFINITE REGENERATION',ABILITY:'DEMON BLOOD ARTS',RANK:'ORIGIN THREAT'},verdict:'COMBAT VERDICT: THE FIRST AND ONLY.',addedAt:Date.now()-86400000*7},
+          {id:'kokushibo',name:'KOKUSHIBO',type:'file',status:'complete',icon:'🌑',title:'UPPER MOON ONE',tiktok:'',stats:{POWER:'MOON BREATHING',ABILITY:'CRESCENT MOON BLADES',RANK:'UPPER ONE'},verdict:'COMBAT VERDICT: CURSED LEGACY.',addedAt:Date.now()-86400000*7},
+          {id:'doma',name:'DOMA',type:'file',status:'complete',icon:'❄️',title:'UPPER MOON TWO',tiktok:'',stats:{POWER:'CRYOKINESIS',ABILITY:'FROZEN LOTUS',RANK:'UPPER TWO'},verdict:'COMBAT VERDICT: BEAUTIFUL. DEADLY.',addedAt:Date.now()-86400000*6},
+          {id:'akaza',name:'AKAZA',type:'file',status:'complete',icon:'👊',title:'UPPER MOON THREE',tiktok:'',stats:{POWER:'DESTRUCTIVE DEATH',ABILITY:'COMPASS NEEDLE',RANK:'UPPER THREE'},verdict:'COMBAT VERDICT: RELENTLESS.',addedAt:Date.now()-86400000*6},
+          {id:'hantengu',name:'HANTENGU',type:'file',status:'complete',icon:'😱',title:'UPPER MOON FOUR',tiktok:'',stats:{POWER:'EMOTION CLONES',ABILITY:'WOOD MANIPULATION',RANK:'UPPER FOUR'},verdict:'COMBAT VERDICT: FEAR INCARNATE.',addedAt:Date.now()-86400000*5},
+          {id:'gyokko',name:'GYOKKO',type:'file',status:'complete',icon:'🐟',title:'UPPER MOON FIVE',tiktok:'',stats:{POWER:'WATER/FISH ARTS',ABILITY:'POT DEMON',RANK:'UPPER FIVE'},verdict:'COMBAT VERDICT: GROTESQUE MASTERY.',addedAt:Date.now()-86400000*4},
+          {id:'daki',name:'DAKI',type:'file',status:'complete',icon:'🎀',title:'UPPER MOON SIX (FEMALE)',tiktok:'',stats:{POWER:'OBI SASH MANIPULATION',ABILITY:'OBI SLASH',RANK:'UPPER SIX'},verdict:'COMBAT VERDICT: SILK AND STEEL.',addedAt:Date.now()-86400000*3},
+          {id:'gyutaro',name:'GYUTARO',type:'file',status:'complete',icon:'🩸',title:'UPPER MOON SIX (MALE)',tiktok:'',stats:{POWER:'BLOOD DEMON ART',ABILITY:'FLYING BLOOD SICKLES',RANK:'UPPER SIX'},verdict:'COMBAT VERDICT: POISON IN THE BLOOD.',addedAt:Date.now()-86400000*2},
+          {id:'enmu',name:'ENMU',type:'file',status:'complete',icon:'😴',title:'LOWER MOON ONE',tiktok:'',stats:{POWER:'DREAM MANIPULATION',ABILITY:'SLEEP INDUCEMENT',RANK:'LOWER ONE'},verdict:'COMBAT VERDICT: SLEEP IS THE TRAP.',addedAt:Date.now()-86400000*1},
+          {id:'rui',name:'RUI',type:'file',status:'complete',icon:'🕷️',title:'LOWER MOON FIVE',tiktok:'',stats:{POWER:'THREAD MANIPULATION',ABILITY:'CUTTING THREAD CAGE',RANK:'LOWER FIVE'},verdict:'COMBAT VERDICT: FRAGILE. LETHAL.',addedAt:Date.now()},
+        ]},
+        {id:'hashira',name:'HASHIRA',type:'folder',icon:'📁',children:[
+          {id:'shinobu',name:'SHINOBU',type:'file',status:'complete',icon:'🦋',title:'INSECT HASHIRA',tiktok:'',stats:{BREATHING:'INSECT BREATHING',ABILITY:'WISTERIA POISON',WEAPON:'THIN NICHIRIN BLADE'},verdict:'COMBAT VERDICT: SILENT. FATAL.',addedAt:Date.now()-86400000*3},
+          {id:'rengoku',name:'RENGOKU',type:'file',status:'complete',icon:'🔥',title:'FLAME HASHIRA',tiktok:'',stats:{BREATHING:'FLAME BREATHING',ABILITY:'NINTH FORM: SETTING SUN',WEAPON:'STANDARD NICHIRIN'},verdict:'COMBAT VERDICT: UNYIELDING INFERNO.',addedAt:Date.now()-86400000*2},
+          {id:'tengen',name:'TENGEN',type:'file',status:'complete',icon:'💎',title:'SOUND HASHIRA',tiktok:'',stats:{BREATHING:'SOUND BREATHING',ABILITY:'FORM FIVE: STRING PERFORMANCE',WEAPON:'DUAL CLEAVERS'},verdict:'COMBAT VERDICT: GOD OF FLASHY.',addedAt:Date.now()-86400000*1},
+          {id:'giyu',name:'GIYU',type:'file',status:'locked',icon:'💧',title:'WATER HASHIRA',tiktok:'',addedAt:Date.now()},
+          {id:'gyomei',name:'GYOMEI',type:'file',status:'locked',icon:'⛰️',title:'STONE HASHIRA',tiktok:'',addedAt:Date.now()},
+          {id:'muichiro',name:'MUICHIRO',type:'file',status:'locked',icon:'🌫️',title:'MIST HASHIRA',tiktok:'',addedAt:Date.now()},
+          {id:'sanemi',name:'SANEMI',type:'file',status:'locked',icon:'🌪️',title:'WIND HASHIRA',tiktok:'',addedAt:Date.now()},
+          {id:'obanai',name:'OBANAI',type:'file',status:'locked',icon:'🐍',title:'SERPENT HASHIRA',tiktok:'',addedAt:Date.now()},
+          {id:'mitsuri',name:'MITSURI',type:'file',status:'locked',icon:'💕',title:'LOVE HASHIRA',tiktok:'',addedAt:Date.now()},
+        ]}
+      ]}
+    ]}
+  ]
+};
+
+// STATE
+let dbTree = JSON.parse(localStorage.getItem(DB_KEY)) || JSON.parse(JSON.stringify(DEFAULT_DB));
+let path = [];
+let isAdmin = false;
+let adminFilter = 'all';
+
+function saveDB() { localStorage.setItem(DB_KEY, JSON.stringify(dbTree)); }
+function getSuggestions() { try { return JSON.parse(localStorage.getItem(SUGG_KEY))||[]; } catch(e){return[];} }
+function saveSuggestions(l) { localStorage.setItem(SUGG_KEY, JSON.stringify(l)); }
+function getVoted() { try { return new Set(JSON.parse(localStorage.getItem(VOTED_KEY))||[]); } catch(e){return new Set();} }
+function saveVoted(s) { localStorage.setItem(VOTED_KEY, JSON.stringify([...s])); }
+function getAnnouncement() { return localStorage.getItem(ANN_KEY)||''; }
+function saveAnnouncement(t) { localStorage.setItem(ANN_KEY, t); }
+
+// PAGE
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const tab=document.getElementById('tab-'+id);
+  if(tab) tab.classList.add('active');
+  if(id==='suggest') renderSuggestions();
+  if(id==='admin'){renderAdminDashboard();renderManageDB();populateFolderSelects();}
+  if(id==='db'){path=[];renderDB();}
+}
+
+function switchAdminTab(tab,el){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-'+tab).classList.add('active');
+  if(tab==='manage') renderManageDB();
+  if(tab==='add') populateFolderSelects();
+  if(tab==='announce'){const a=getAnnouncement();if(a)document.getElementById('ann-input').value=a;}
+}
+
+// DB HELPERS
+function findNode(id,node){if(node.id===id)return node;if(node.children)for(const c of node.children){const f=findNode(id,c);if(f)return f;}return null;}
+function findParent(id,node){if(!node.children)return null;for(const c of node.children){if(c.id===id)return node;const f=findParent(id,c);if(f)return f;}return null;}
+function currentNode(){let node=dbTree;for(const id of path){node=node.children?.find(c=>c.id===id);if(!node)return dbTree;}return node;}
+function allComplete(n){if(!n.children)return n.status==='complete';return n.children.every(c=>allComplete(c));}
+function countDone(n){if(!n.children)return 0;let x=0;for(const c of n.children){if(c.type==='file'&&c.status==='complete')x++;if(c.type==='folder')x+=countDone(c);}return x;}
+function countAll(n){if(!n.children)return 0;let x=0;for(const c of n.children){if(c.type==='file')x++;if(c.type==='folder')x+=countAll(c);}return x;}
+function getAllFolders(node,list=[]){if(node.type==='folder'){list.push({id:node.id,name:node.name});if(node.children)node.children.forEach(c=>getAllFolders(c,list));}return list;}
+function getAllChars(node,parentName='',list=[]){if(node.type==='file')list.push({...node,parentName});if(node.children)node.children.forEach(c=>getAllChars(c,node.name,list));return list;}
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+
+// HOME
+function renderHome() {
+  const allChars = getAllChars(dbTree);
+  const completed = allChars.filter(c=>c.status==='complete').length;
+  const total = allChars.filter(c=>c.type==='file').length;
+  const soon = allChars.filter(c=>c.status==='coming-soon').length;
+
+  document.getElementById('home-stats').innerHTML=`
+    <div class="home-stat"><div class="home-stat-val">${completed}</div><div class="home-stat-label">EDITS DONE</div></div>
+    <div class="home-stat"><div class="home-stat-val">${total}</div><div class="home-stat-label">TOTAL CHARS</div></div>
+    <div class="home-stat"><div class="home-stat-val" style="color:var(--gold)">${soon}</div><div class="home-stat-label">COMING SOON</div></div>
+  `;
+
+  // recently added — last 4 complete chars sorted by addedAt
+  const recent = [...allChars].filter(c=>c.status==='complete'&&c.addedAt).sort((a,b)=>b.addedAt-a.addedAt).slice(0,4);
+  const now = Date.now();
+  document.getElementById('recent-grid').innerHTML = recent.length ? recent.map((c,i)=>{
+    const isNew = (now - (c.addedAt||0)) < 86400000*3;
+    return `<div class="recent-item" onclick="openCharDirect('${c.id}')">
+      ${isNew&&i===0?'<div class="new-badge">NEW</div>':''}
+      <div class="recent-icon">${c.icon||'📄'}</div>
+      <div class="recent-name">${c.name}</div>
+      <div class="recent-sub">${c.parentName}</div>
+    </div>`;
+  }).join('') : '<div style="color:var(--text-dim);font-size:9px;letter-spacing:2px">NO EDITS YET</div>';
+}
+
+function openCharDirect(id) {
+  path = [];
+  renderDB();
+  const node = findNode(id, dbTree);
+  if (node) renderChar(node);
+}
+
+// SEARCH
+function handleSearch(val) {
+  const resultsEl = document.getElementById('search-results');
+  const recentSection = document.getElementById('recently-added-section');
+  if (!val.trim()) { resultsEl.style.display='none'; recentSection.style.display='block'; return; }
+  recentSection.style.display='none';
+  resultsEl.style.display='block';
+  const q = val.trim().toUpperCase();
+  const allChars = getAllChars(dbTree).filter(c=>c.type==='file');
+  const matches = allChars.filter(c=>c.name.includes(q)||(c.title||'').toUpperCase().includes(q)||(c.parentName||'').toUpperCase().includes(q));
+  if (!matches.length) { resultsEl.innerHTML=`<div class="empty" style="padding:20px">NO RESULTS FOR "${val.toUpperCase()}"</div>`; return; }
+  resultsEl.innerHTML = matches.map(c=>{
+    const statusColor=c.status==='complete'?'var(--green)':c.status==='coming-soon'?'var(--gold)':'var(--red)';
+    const statusTxt=c.status==='complete'?'COMPLETE':c.status==='coming-soon'?'COMING SOON':'LOCKED';
+    return `<div class="search-result-item" onclick="openCharDirect('${c.id}')">
+      <div class="sr-icon">${c.icon||'📄'}</div>
+      <div class="sr-info">
+        <div class="sr-name">${c.name}</div>
+        <div class="sr-path">${c.parentName} · ${c.title||''}</div>
+      </div>
+      <div class="sr-status" style="color:${statusColor}">${statusTxt}</div>
+    </div>`;
+  }).join('');
+}
+
+// DB RENDER
+function renderDB() {
+  document.getElementById('search-input').value='';
+  document.getElementById('search-results').style.display='none';
+  document.getElementById('recently-added-section').style.display='block';
+
+  const node = currentNode();
+  updateBreadcrumb();
+  const el = document.getElementById('db-content');
+  const homeView = document.getElementById('home-view');
+
+  if (path.length===0) { homeView.style.display='block'; renderHome(); } 
+  else { homeView.style.display='none'; }
+
+  if (node.type==='file') { renderChar(node); return; }
+  let html = path.length>0?`<div class="back-btn" onclick="goBack()">← BACK</div>`:'';
+  if (path.length>0) {
+    html+=`<div class="folder-header"><div class="folder-title">${node.name}</div><div class="folder-meta">${countDone(node)}/${countAll(node)} COMPLETE</div></div>`;
+  }
+  html+=`<div class="file-grid">`;
+  for(const item of node.children||[]){
+    const locked=item.status==='locked';
+    const soon=item.status==='coming-soon';
+    const done=item.status==='complete'||(item.type==='folder'&&allComplete(item));
+    const cls=locked?'locked':soon?'coming-soon':done?'complete':'';
+    html+=`<div class="file-item ${cls}" onclick="openItem('${item.id}')">
+      ${done&&!locked?'<div class="corner-dot"></div>':''}
+      ${soon?'<div class="corner-dot soon"></div>':''}
+      <div class="file-icon">${item.icon||'📁'}</div>
+      <div class="file-name">${item.name}</div>
+      <div class="file-badge ${locked?'badge-lock':soon?'badge-soon':done?'badge-done':''}">${locked?'[ LOCKED ]':soon?'[ COMING SOON ]':done?'[ COMPLETE ]':item.type==='folder'?'[ FOLDER ]':''}</div>
+    </div>`;
+  }
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function openItem(id){
+  const node=findNode(id,dbTree);
+  if(!node)return;
+  if(node.status==='locked'){showToast('FILE LOCKED');return;}
+  if(node.status==='coming-soon'){showToast('EDIT COMING SOON 👀');return;}
+  if(node.type==='folder'){path.push(id);renderDB();}
+  else renderChar(node);
+}
+function goBack(){path.pop();renderDB();}
+
+function renderChar(node){
+  updateBreadcrumb();
+  document.getElementById('home-view').style.display='none';
+  const el=document.getElementById('db-content');
+  const statsHtml=Object.entries(node.stats||{}).map(([k,v])=>`<div class="panel-stat"><span class="stat-k">${k}</span><span class="stat-v">${v}</span></div>`).join('');
+  const watchBtn=node.tiktok?`<a class="watch-btn" href="${node.tiktok}" target="_blank" rel="noopener">▶ WATCH EDIT</a>`:'';
+  const shareBtn=node.tiktok?`<button class="share-btn" onclick="shareChar('${node.tiktok}','${node.name}')">⤴ SHARE</button>`:'';
+  el.innerHTML=`<div class="char-panel">
+    <div class="back-btn" onclick="goBack()">← BACK</div>
+    <div class="panel-card">
+      <div class="panel-top">
+        <div class="panel-icon-wrap">${node.icon||'📄'}</div>
+        <div class="panel-info">
+          <div class="panel-tag">// FILE ACCESSED</div>
+          <div class="panel-name">${node.name}</div>
+          <div class="panel-title">${node.title||''}</div>
+        </div>
+      </div>
+      <div class="panel-divider"></div>
+      ${statsHtml}
+      ${node.verdict?`<div class="panel-verdict">${node.verdict}</div>`:''}
+      <div class="panel-actions">${watchBtn}${shareBtn}</div>
+    </div>
+  </div>`;
+}
+
+function shareChar(url, name) {
+  if (navigator.share) {
+    navigator.share({ title: `@00fadevfx — ${name} EDIT`, url }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(url).then(()=>showToast('LINK COPIED!')).catch(()=>showToast('COPY FAILED'));
+  }
+}
+
+function updateBreadcrumb(){
+  const bc=document.getElementById('breadcrumb');
+  if(path.length===0){bc.innerHTML='';return;}
+  let html=`<span onclick="path=[];renderDB()">ROOT</span>`;
+  let acc=[];
+  for(const id of path){
+    acc.push(id);
+    const copy=[...acc];
+    const node=findNode(id,dbTree);
+    const isLast=id===path[path.length-1];
+    html+=`<span class="sep">/</span><span class="${isLast?'active':''}" onclick="path=${JSON.stringify(copy)};renderDB()">${node?.name||id}</span>`;
+  }
+  bc.innerHTML=html;
+}
+
+// SUGGESTIONS
+function submitSuggestion(){
+  const char=document.getElementById('inp-char').value.trim().toUpperCase();
+  const anime=document.getElementById('inp-anime').value.trim().toUpperCase();
+  if(!char||!anime){showToast('FILL IN BOTH FIELDS');return;}
+  const suggestions=getSuggestions();const voted=getVoted();
+  const exists=suggestions.find(s=>s.char===char&&s.anime===anime);
+  if(exists){if(voted.has(exists.id)){showToast('ALREADY VOTED');return;}exists.votes++;voted.add(exists.id);saveVoted(voted);showToast('UPVOTED!');}
+  else{const id=genId();suggestions.push({id,char,anime,votes:1,status:'pending',date:Date.now()});voted.add(id);saveVoted(voted);showToast('SUBMITTED!');}
+  saveSuggestions(suggestions);
+  document.getElementById('inp-char').value='';document.getElementById('inp-anime').value='';
+  renderSuggestions();
+}
+function vote(id){
+  const voted=getVoted();if(voted.has(id)){showToast('ALREADY VOTED');return;}
+  const s=getSuggestions();const item=s.find(x=>x.id===id);if(!item)return;
+  item.votes++;voted.add(id);saveVoted(voted);saveSuggestions(s);renderSuggestions();showToast('VOTED!');
+}
+function renderSuggestions(){
+  const s=getSuggestions();const voted=getVoted();
+  const sorted=[...s].sort((a,b)=>b.votes-a.votes);
+  document.getElementById('suggest-count').textContent=`${sorted.length} TOTAL`;
+  const list=document.getElementById('suggest-list');
+  if(!sorted.length){list.innerHTML=`<div class="empty">NO SUGGESTIONS YET.<br>BE THE FIRST.</div>`;return;}
+  list.innerHTML=sorted.map(s=>{
+    const hv=voted.has(s.id);
+    const bc=s.status==='inprogress'?'s-inprogress':s.status==='completed'?'s-completed':'s-pending';
+    const bt=s.status==='inprogress'?'IN PROGRESS':s.status==='completed'?'COMPLETED':'PENDING';
+    return `<div class="suggest-item status-${s.status}">
+      <div class="vote-col"><button class="vote-btn ${hv?'voted':''}" onclick="vote('${s.id}')">▲</button><div class="vote-count">${s.votes}</div></div>
+      <div class="suggest-info"><div class="suggest-char">${s.char}</div><div class="suggest-anime">${s.anime}</div></div>
+      <span class="s-badge ${bc}">${bt}</span>
+    </div>`;
+  }).join('');
+}
+
+// ADMIN DASHBOARD
+function setFilter(f,el){
+  adminFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');renderAdminDashboard();
+}
+function renderAdminDashboard(){
+  const s=getSuggestions();
+  document.getElementById('stat-total').textContent=s.length;
+  document.getElementById('stat-pending').textContent=s.filter(x=>x.status==='pending').length;
+  document.getElementById('stat-wip').textContent=s.filter(x=>x.status==='inprogress').length;
+  document.getElementById('stat-done').textContent=s.filter(x=>x.status==='completed').length;
+  let filtered=[...s].sort((a,b)=>b.votes-a.votes);
+  if(adminFilter!=='all') filtered=filtered.filter(x=>x.status===adminFilter);
+  const list=document.getElementById('admin-list');
+  if(!filtered.length){list.innerHTML=`<div class="empty">NOTHING HERE.</div>`;return;}
+  list.innerHTML=filtered.map(s=>{
+    const bc=s.status==='inprogress'?'s-inprogress':s.status==='completed'?'s-completed':'s-pending';
+    const bt=s.status==='inprogress'?'IN PROGRESS':s.status==='completed'?'COMPLETED':'PENDING';
+    return `<div class="admin-item status-${s.status}">
+      <div class="admin-item-top">
+        <div class="admin-votes">${s.votes}</div>
+        <div class="admin-item-info"><div class="admin-char-name">${s.char}</div><div class="admin-anime-name">${s.anime}</div></div>
+        <span class="s-badge ${bc}">${bt}</span>
+      </div>
+      <div class="admin-controls">
+        ${s.status!=='inprogress'?`<button class="admin-ctrl ctrl-prog" onclick="adminSet('${s.id}','inprogress')">MARK WIP</button>`:''}
+        ${s.status!=='completed'?`<button class="admin-ctrl ctrl-done" onclick="adminSet('${s.id}','completed')">MARK DONE</button>`:''}
+        ${s.status!=='pending'?`<button class="admin-ctrl ctrl-reset" onclick="adminSet('${s.id}','pending')">RESET</button>`:''}
+        <button class="admin-ctrl ctrl-del" onclick="adminDel('${s.id}')">DELETE</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function adminSet(id,status){const s=getSuggestions();const item=s.find(x=>x.id===id);if(item){item.status=status;saveSuggestions(s);renderAdminDashboard();renderSuggestions();showToast('UPDATED');}}
+function adminDel(id){saveSuggestions(getSuggestions().filter(s=>s.id!==id));renderAdminDashboard();renderSuggestions();showToast('DELETED');}
+
+// ANNOUNCEMENT
+function previewAnn(val){const p=document.getElementById('ann-preview');p.textContent=val||'';p.classList.toggle('visible',!!val);}
+function setAnnouncement(){
+  const val=document.getElementById('ann-input').value.trim();
+  if(!val){showToast('ENTER A MESSAGE');return;}
+  saveAnnouncement(val);renderAnnouncement();showToast('ANNOUNCEMENT PUBLISHED');
+}
+function clearAnnouncement(){saveAnnouncement('');renderAnnouncement();document.getElementById('ann-input').value='';showToast('BANNER CLEARED');}
+function renderAnnouncement(){
+  const text=getAnnouncement();
+  const banner=document.getElementById('ann-banner');
+  const textEl=document.getElementById('ann-text');
+  if(text){banner.classList.add('visible');textEl.textContent=text;}
+  else{banner.classList.remove('visible');}
+}
+
+// MANAGE DB
+function renderManageDB(){
+  const el=document.getElementById('manage-content');
+  let html=`<div style="font-size:9px;letter-spacing:4px;color:var(--text-dim);margin-bottom:12px;font-family:'Rajdhani',sans-serif">FOLDERS</div>`;
+  getAllFolders(dbTree).filter(f=>f.id!=='root').forEach(f=>{
+    const node=findNode(f.id,dbTree);
+    html+=`<div class="db-item"><div class="db-item-icon">${node.icon||'📁'}</div><div class="db-item-info"><div class="db-item-name">${node.name}</div><div class="db-item-sub">${(node.children||[]).length} ITEMS</div></div><div class="db-item-actions"><button class="act-btn act-edit" onclick="editFolder('${node.id}')">EDIT</button><button class="act-btn act-del" onclick="deleteNode('${node.id}')">DELETE</button></div></div>`;
+  });
+  html+=`<div style="font-size:9px;letter-spacing:4px;color:var(--text-dim);margin:20px 0 12px;font-family:'Rajdhani',sans-serif">CHARACTERS</div>`;
+  getAllChars(dbTree).forEach(c=>{
+    const statusColor=c.status==='complete'?'var(--green)':c.status==='coming-soon'?'var(--gold)':'var(--red)';
+    html+=`<div class="db-item"><div class="db-item-icon">${c.icon||'📄'}</div><div class="db-item-info"><div class="db-item-name">${c.name}</div><div class="db-item-sub" style="color:${statusColor}">${c.status.toUpperCase()}${c.tiktok?' · 🔗':''}</div></div><div class="db-item-actions"><button class="act-btn act-edit" onclick="editCharacter('${c.id}')">EDIT</button><button class="act-btn act-del" onclick="deleteNode('${c.id}')">DELETE</button></div></div>`;
+  });
+  el.innerHTML=html;
+}
+
+// ADD FOLDER/CHAR
+function populateFolderSelects(){
+  const folders=getAllFolders(dbTree);
+  const opts=folders.map(f=>`<option value="${f.id}">${f.name}</option>`).join('');
+  ['new-folder-parent','new-char-parent'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});
+}
+function addFolder(){
+  const name=document.getElementById('new-folder-name').value.trim().toUpperCase();
+  const icon=document.getElementById('new-folder-icon').value.trim()||'📁';
+  const parentId=document.getElementById('new-folder-parent').value;
+  if(!name){showToast('ENTER A NAME');return;}
+  const parent=findNode(parentId,dbTree);if(!parent)return;
+  if(!parent.children)parent.children=[];
+  parent.children.push({id:genId(),name,type:'folder',icon,children:[]});
+  saveDB();renderDB();renderManageDB();populateFolderSelects();
+  document.getElementById('new-folder-name').value='';showToast('FOLDER ADDED');
+}
+function addStatRow(cid,k='',v=''){
+  const container=document.getElementById(cid);
+  const row=document.createElement('div');row.className='stat-row-builder';
+  row.innerHTML=`<input class="field-input" placeholder="LABEL" value="${k}" style="flex:1"/><input class="field-input" placeholder="VALUE" value="${v}" style="flex:1.5"/><button class="remove-stat" onclick="this.parentElement.remove()">×</button>`;
+  container.appendChild(row);
+}
+function getStats(cid){
+  const rows=document.querySelectorAll(`#${cid} .stat-row-builder`);const stats={};
+  rows.forEach(r=>{const i=r.querySelectorAll('.field-input');const k=i[0].value.trim().toUpperCase();const v=i[1].value.trim();if(k&&v)stats[k]=v;});return stats;
+}
+function addCharacter(){
+  const name=document.getElementById('new-char-name').value.trim().toUpperCase();
+  const icon=document.getElementById('new-char-icon').value.trim()||'📄';
+  const title=document.getElementById('new-char-title').value.trim().toUpperCase();
+  const status=document.getElementById('new-char-status').value;
+  const parentId=document.getElementById('new-char-parent').value;
+  const tiktok=document.getElementById('new-char-tiktok').value.trim();
+  const verdict=document.getElementById('new-char-verdict').value.trim().toUpperCase();
+  const stats=getStats('new-stats-builder');
+  if(!name){showToast('ENTER A NAME');return;}
+  const parent=findNode(parentId,dbTree);if(!parent)return;
+  if(!parent.children)parent.children=[];
+  parent.children.push({id:genId(),name,type:'file',status,icon,title,tiktok,verdict,stats,addedAt:Date.now()});
+  saveDB();renderDB();renderManageDB();
+  ['new-char-name','new-char-icon','new-char-title','new-char-tiktok','new-char-verdict'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('new-stats-builder').innerHTML='';
+  showToast('CHARACTER ADDED');
+}
+
+// DELETE
+function deleteNode(id){
+  const parent=findParent(id,dbTree);if(!parent)return;
+  parent.children=parent.children.filter(c=>c.id!==id);
+  saveDB();renderDB();renderManageDB();populateFolderSelects();showToast('DELETED');
+}
+
+// EDIT
+function editFolder(id){
+  const node=findNode(id,dbTree);if(!node)return;
+  document.getElementById('edit-modal-title').textContent='// EDIT FOLDER';
+  document.getElementById('edit-modal-body').innerHTML=`
+    <div style="margin-bottom:8px"><div class="field-label">NAME</div><input class="field-input" id="ef-name" value="${node.name}"/></div>
+    <div><div class="field-label">ICON</div><input class="field-input" id="ef-icon" value="${node.icon||'📁'}" maxlength="4"/></div>`;
+  document.getElementById('edit-modal-confirm').onclick=()=>{
+    node.name=document.getElementById('ef-name').value.trim().toUpperCase()||node.name;
+    node.icon=document.getElementById('ef-icon').value.trim()||node.icon;
+    saveDB();renderDB();renderManageDB();closeEditModal();showToast('UPDATED');
+  };
+  document.getElementById('edit-modal').classList.add('visible');
+}
+function editCharacter(id){
+  const node=findNode(id,dbTree);if(!node)return;
+  const builderHtml=Object.entries(node.stats||{}).map(([k,v])=>`<div class="stat-row-builder"><input class="field-input" placeholder="LABEL" value="${k}" style="flex:1"/><input class="field-input" placeholder="VALUE" value="${v}" style="flex:1.5"/><button class="remove-stat" onclick="this.parentElement.remove()">×</button></div>`).join('');
+  document.getElementById('edit-modal-title').textContent='// EDIT CHARACTER';
+  document.getElementById('edit-modal-body').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div><div class="field-label">NAME</div><input class="field-input" id="ec-name" value="${node.name}"/></div>
+      <div><div class="field-label">ICON</div><input class="field-input" id="ec-icon" value="${node.icon||''}" maxlength="4"/></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div><div class="field-label">TITLE</div><input class="field-input" id="ec-title" value="${node.title||''}"/></div>
+      <div><div class="field-label">STATUS</div>
+        <select class="field-select" id="ec-status">
+          <option value="complete" ${node.status==='complete'?'selected':''}>COMPLETE</option>
+          <option value="coming-soon" ${node.status==='coming-soon'?'selected':''}>COMING SOON</option>
+          <option value="locked" ${node.status==='locked'?'selected':''}>LOCKED</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:8px"><div class="field-label">TIKTOK LINK</div><input class="field-input" id="ec-tiktok" value="${node.tiktok||''}"/></div>
+    <div style="margin-bottom:8px"><div class="field-label">VERDICT</div><input class="field-input" id="ec-verdict" value="${node.verdict||''}"/></div>
+    <div class="field-label" style="margin-bottom:6px">STATS</div>
+    <div class="stats-builder" id="ec-stats-builder">${builderHtml}</div>
+    <button class="add-stat-btn" onclick="addStatRow('ec-stats-builder')">+ ADD STAT</button>`;
+  document.getElementById('edit-modal-confirm').onclick=()=>{
+    node.name=document.getElementById('ec-name').value.trim().toUpperCase()||node.name;
+    node.icon=document.getElementById('ec-icon').value.trim()||node.icon;
+    node.title=document.getElementById('ec-title').value.trim().toUpperCase();
+    node.status=document.getElementById('ec-status').value;
+    node.tiktok=document.getElementById('ec-tiktok').value.trim();
+    node.verdict=document.getElementById('ec-verdict').value.trim().toUpperCase();
+    node.stats=getStats('ec-stats-builder');
+    saveDB();renderDB();renderManageDB();closeEditModal();showToast('UPDATED');
+  };
+  document.getElementById('edit-modal').classList.add('visible');
+}
+function closeEditModal(){document.getElementById('edit-modal').classList.remove('visible');}
+document.getElementById('edit-modal').addEventListener('click',e=>{if(e.target===document.getElementById('edit-modal'))closeEditModal();});
+
+// AUTH
+function handleAdminClick(){if(isAdmin){logout();return;}document.getElementById('modal').classList.add('visible');setTimeout(()=>document.getElementById('modal-pw').focus(),100);}
+function checkPassword(){
+  if(document.getElementById('modal-pw').value===PASSWORD){
+    isAdmin=true;document.getElementById('adminBtn').classList.add('active');
+    closeModal();showPage('admin');showToast('WELCOME BACK 👋');
+  }else{document.getElementById('modal-err').style.display='block';document.getElementById('modal-pw').value='';}
+}
+function logout(){isAdmin=false;document.getElementById('adminBtn').classList.remove('active');showPage('db');document.getElementById('tab-db').classList.add('active');showToast('LOGGED OUT');}
+function closeModal(){document.getElementById('modal').classList.remove('visible');document.getElementById('modal-pw').value='';document.getElementById('modal-err').style.display='none';}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+
+// TOAST
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);}
+
+// INIT
+renderDB();
+renderSuggestions();
+renderAnnouncement();
+</script>
+</body>
+</html>

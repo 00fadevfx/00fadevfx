@@ -16,8 +16,6 @@
   }
   body { background: var(--bg); color: #fff; font-family: 'Share Tech Mono', monospace; min-height: 100vh; overflow-x: hidden; }
   body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px); pointer-events: none; z-index: 1000; }
-
-  /* NAV */
   .topnav { position: sticky; top: 0; background: rgba(8,8,8,0.97); border-bottom: 1px solid var(--border); padding: 0 16px; height: 48px; display: flex; align-items: center; gap: 12px; z-index: 800; backdrop-filter: blur(10px); }
   .nav-logo { font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 900; letter-spacing: 2px; color: #fff; flex-shrink: 0; }
   .nav-handle { font-size: 9px; letter-spacing: 2px; color: var(--text-dim); flex: 1; }
@@ -27,26 +25,18 @@
   .admin-btn { padding: 5px 10px; font-size: 8px; letter-spacing: 2px; color: var(--text-dim); cursor: pointer; border: 1px solid var(--border); background: transparent; font-family: 'Rajdhani', sans-serif; font-weight: 600; transition: all 0.2s; }
   .admin-btn:hover { color: var(--gold); border-color: var(--gold); }
   .admin-btn.active { color: var(--gold); border-color: var(--gold); background: rgba(255,224,102,0.08); }
-
-  /* ANNOUNCEMENT BANNER */
   .announcement { background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border); padding: 10px 16px; display: none; align-items: center; gap: 10px; }
   .announcement.visible { display: flex; }
   .ann-icon { font-size: 14px; flex-shrink: 0; }
   .ann-text { font-size: 10px; letter-spacing: 1px; color: #fff; flex: 1; font-family: 'Rajdhani', sans-serif; font-weight: 600; }
   .ann-tag { font-size: 7px; letter-spacing: 3px; color: var(--gold); font-family: 'Rajdhani', sans-serif; flex-shrink: 0; border: 1px solid var(--gold); padding: 2px 6px; }
-
-  /* PAGES */
   .page { display: none; padding: 16px; max-width: 700px; margin: 0 auto; }
   .page.active { display: block; animation: fadeIn 0.3s ease; }
   #page-admin { max-width: 700px; }
-
-  /* HOME STATS BAR */
   .home-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px; }
   .home-stat { border: 1px solid var(--border); background: var(--bg3); padding: 14px; text-align: center; }
   .home-stat-val { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 4px; }
   .home-stat-label { font-size: 7px; letter-spacing: 3px; color: var(--text-dim); font-family: 'Rajdhani', sans-serif; }
-
-  /* RECENTLY ADDED */
   .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .section-title { font-size: 9px; letter-spacing: 4px; color: var(--text-dim); font-family: 'Rajdhani', sans-serif; }
   .section-divider { height: 1px; background: var(--border); margin-bottom: 16px; }
@@ -58,8 +48,6 @@
   .recent-name { font-size: 9px; letter-spacing: 1px; color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
   .recent-sub { font-size: 7px; letter-spacing: 1px; color: var(--text-dim); }
   .new-badge { position: absolute; top: -6px; right: -6px; background: var(--gold); color: #000; font-size: 6px; letter-spacing: 1px; padding: 2px 5px; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
-
-  /* SEARCH */
   .search-wrap { position: relative; margin-bottom: 16px; }
   .search-input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 10px 14px 10px 36px; outline: none; transition: border-color 0.2s; }
   .search-input:focus { border-color: var(--border-bright); }
@@ -73,19 +61,13 @@
   .sr-name { font-size: 11px; letter-spacing: 1px; color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
   .sr-path { font-size: 8px; letter-spacing: 1px; color: var(--text-dim); margin-top: 2px; }
   .sr-status { font-size: 7px; letter-spacing: 2px; font-family: 'Rajdhani', sans-serif; flex-shrink: 0; }
-
-  /* BREADCRUMB */
   .breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; font-size: 9px; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 14px; }
   .breadcrumb span { cursor: pointer; transition: color 0.2s; }
   .breadcrumb span:hover, .breadcrumb span.active { color: #fff; }
   .breadcrumb .sep { color: var(--border); }
-
-  /* FOLDER */
   .folder-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
   .folder-title { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; letter-spacing: 3px; }
   .folder-meta { font-size: 8px; letter-spacing: 1px; color: var(--text-dim); }
-
-  /* FILE GRID */
   .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
   .file-item { border: 1px solid var(--border); background: var(--accent-soft); padding: 14px 10px; cursor: pointer; transition: all 0.18s; display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; position: relative; -webkit-tap-highlight-color: transparent; }
   .file-item:active { transform: scale(0.97); }
@@ -103,8 +85,6 @@
   .badge-done { color: var(--green); } .badge-lock { color: var(--red); } .badge-soon { color: var(--gold); }
   .corner-dot { position: absolute; top: 5px; right: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px var(--green); }
   .corner-dot.soon { background: var(--gold); box-shadow: 0 0 5px var(--gold); animation: blink 1.5s infinite; }
-
-  /* CHAR PANEL */
   .char-panel { animation: fadeIn 0.3s ease; }
   .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 9px; letter-spacing: 2px; color: var(--text-dim); cursor: pointer; margin-bottom: 16px; padding: 6px 0; transition: color 0.2s; }
   .back-btn:hover { color: #fff; }
@@ -125,8 +105,6 @@
   .watch-btn:hover { background: #ddd; transform: translateY(-1px); }
   .share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; background: transparent; color: var(--text-dim); border: 1px solid var(--border); font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
   .share-btn:hover { color: #fff; border-color: var(--border-bright); }
-
-  /* SUGGEST */
   .suggest-form { border: 1px solid var(--border); background: var(--bg3); padding: 18px; margin-bottom: 20px; }
   .suggest-form h2 { font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 3px; margin-bottom: 14px; }
   .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -153,8 +131,6 @@
   .s-pending { color: var(--text-dim); border-color: var(--border); }
   .s-inprogress { color: var(--gold); border-color: var(--gold); background: rgba(255,224,102,0.08); }
   .s-completed { color: var(--green); border-color: var(--green); background: rgba(170,255,170,0.08); }
-
-  /* ADMIN */
   .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
   .admin-title { font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 900; letter-spacing: 3px; color: var(--gold); }
   .admin-logout { font-size: 8px; letter-spacing: 2px; color: var(--text-dim); cursor: pointer; border: 1px solid var(--border); padding: 5px 10px; font-family: 'Rajdhani', sans-serif; transition: all 0.2s; }
@@ -186,14 +162,10 @@
   .ctrl-done { color: var(--green); border-color: rgba(170,255,170,0.4); } .ctrl-done:hover { background: rgba(170,255,170,0.06); border-color: var(--green); }
   .ctrl-reset:hover { color: #fff; border-color: var(--border-bright); }
   .ctrl-del { color: var(--red); border-color: rgba(255,102,102,0.4); } .ctrl-del:hover { background: rgba(255,102,102,0.06); border-color: var(--red); }
-
-  /* ANNOUNCEMENT ADMIN */
   .ann-form { border: 1px solid var(--border); background: var(--bg3); padding: 16px; margin-bottom: 12px; }
   .ann-form h3 { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 3px; margin-bottom: 12px; color: var(--gold); }
   .ann-preview { border: 1px solid rgba(255,224,102,0.3); background: rgba(255,224,102,0.04); padding: 10px 14px; margin-top: 10px; font-size: 10px; color: #fff; font-family: 'Rajdhani', sans-serif; display: none; }
   .ann-preview.visible { display: block; }
-
-  /* ADD FORMS */
   .form-card { border: 1px solid var(--border); background: var(--bg3); padding: 18px; margin-bottom: 12px; }
   .form-card h3 { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 3px; color: #fff; margin-bottom: 14px; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
@@ -211,8 +183,6 @@
   .btn-secondary:hover { color: #fff; border-color: var(--border-bright); }
   .btn-danger { background: transparent; color: var(--red); border: 1px solid rgba(255,102,102,0.4); padding: 9px 16px; font-family: 'Rajdhani', sans-serif; font-size: 9px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
   .btn-danger:hover { background: rgba(255,102,102,0.08); border-color: var(--red); }
-
-  /* MANAGE LIST */
   .db-item { border: 1px solid var(--border); background: var(--bg3); padding: 12px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
   .db-item-icon { font-size: 18px; flex-shrink: 0; }
   .db-item-info { flex: 1; min-width: 0; }
@@ -222,16 +192,12 @@
   .act-btn { padding: 4px 10px; font-size: 7px; letter-spacing: 1px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); cursor: pointer; font-family: 'Rajdhani', sans-serif; transition: all 0.2s; }
   .act-edit { color: #fff; border-color: var(--border-bright); } .act-edit:hover { background: var(--accent-soft); }
   .act-del { color: var(--red); border-color: rgba(255,102,102,0.3); } .act-del:hover { background: rgba(255,102,102,0.08); border-color: var(--red); }
-
-  /* STATS BUILDER */
   .stats-builder { border: 1px solid var(--border); padding: 10px; margin-bottom: 8px; }
   .stat-row-builder { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
   .stat-row-builder .field-input { flex: 1; }
   .remove-stat { width: 28px; height: 28px; background: transparent; border: 1px solid rgba(255,102,102,0.4); color: var(--red); cursor: pointer; font-size: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
   .add-stat-btn { font-size: 8px; letter-spacing: 2px; color: var(--text-dim); background: transparent; border: 1px dashed var(--border); padding: 6px 12px; cursor: pointer; font-family: 'Rajdhani', sans-serif; transition: all 0.2s; width: 100%; margin-top: 4px; }
   .add-stat-btn:hover { color: #fff; border-color: var(--border-bright); }
-
-  /* MODAL */
   .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 2000; align-items: center; justify-content: center; }
   .modal-bg.visible { display: flex; }
   .modal { background: var(--bg2); border: 1px solid var(--border-bright); padding: 28px 24px; width: min(320px, 90vw); animation: fadeIn 0.2s ease; }
@@ -242,15 +208,12 @@
   .modal-btn { flex: 1; padding: 10px; font-family: 'Orbitron', monospace; font-size: 9px; letter-spacing: 2px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-mid); transition: all 0.2s; }
   .modal-btn.confirm { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
   .modal-err { font-size: 9px; color: var(--red); margin-bottom: 8px; display: none; letter-spacing: 1px; }
-
   .empty { text-align: center; padding: 40px 20px; color: var(--text-dim); font-size: 10px; letter-spacing: 2px; line-height: 2.2; }
   .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px); background: #fff; color: #000; font-family: 'Orbitron', monospace; font-size: 9px; letter-spacing: 2px; padding: 10px 20px; z-index: 3000; transition: transform 0.3s ease; white-space: nowrap; pointer-events: none; }
   .toast.show { transform: translateX(-50%) translateY(0); }
-
   @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
   @keyframes verdictFlick { 0%{opacity:0} 20%{opacity:1} 35%{opacity:0.4} 55%{opacity:1} 70%{opacity:0.6} 100%{opacity:1} }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
   @media (max-width: 480px) {
     .nav-handle { display: none; }
     .nav-tab, .admin-btn { padding: 5px 7px; font-size: 7px; }
@@ -275,16 +238,13 @@
   <button class="admin-btn" id="adminBtn" onclick="handleAdminClick()">ADMIN</button>
 </div>
 
-<!-- ANNOUNCEMENT BANNER -->
 <div class="announcement" id="ann-banner">
   <div class="ann-tag">ANNOUNCEMENT</div>
   <div class="ann-icon">📢</div>
   <div class="ann-text" id="ann-text"></div>
 </div>
 
-<!-- DATABASE -->
 <div class="page active" id="page-db">
-  <!-- HOME VIEW (shown when at root) -->
   <div id="home-view">
     <div class="home-stats" id="home-stats"></div>
     <div class="search-wrap">
@@ -293,14 +253,10 @@
     </div>
     <div class="search-results" id="search-results" style="display:none"></div>
     <div id="recently-added-section">
-      <div class="section-header">
-        <div class="section-title">// RECENTLY ADDED</div>
-      </div>
+      <div class="section-header"><div class="section-title">// RECENTLY ADDED</div></div>
       <div class="section-divider"></div>
       <div class="recent-grid" id="recent-grid"></div>
-      <div class="section-header">
-        <div class="section-title">// BROWSE ALL</div>
-      </div>
+      <div class="section-header"><div class="section-title">// BROWSE ALL</div></div>
       <div class="section-divider"></div>
     </div>
   </div>
@@ -308,7 +264,6 @@
   <div id="db-content"></div>
 </div>
 
-<!-- SUGGEST -->
 <div class="page" id="page-suggest">
   <div class="suggest-form">
     <h2>// SUGGEST A CHARACTER</h2>
@@ -326,7 +281,6 @@
   <div id="suggest-list"></div>
 </div>
 
-<!-- ADMIN -->
 <div class="page" id="page-admin">
   <div style="max-width:700px;margin:0 auto;padding:16px">
     <div class="admin-header">
@@ -339,8 +293,6 @@
       <div class="admin-tab" onclick="switchAdminTab('add',this)">ADD NEW</div>
       <div class="admin-tab" onclick="switchAdminTab('announce',this)">ANNOUNCEMENT</div>
     </div>
-
-    <!-- SUGGESTIONS -->
     <div class="admin-panel active" id="panel-suggestions">
       <div class="stat-cards">
         <div class="stat-card"><div class="stat-card-val" style="color:#fff" id="stat-total">0</div><div class="stat-card-label">TOTAL</div></div>
@@ -356,13 +308,7 @@
       </div>
       <div id="admin-list"></div>
     </div>
-
-    <!-- MANAGE -->
-    <div class="admin-panel" id="panel-manage">
-      <div id="manage-content"></div>
-    </div>
-
-    <!-- ADD NEW -->
+    <div class="admin-panel" id="panel-manage"><div id="manage-content"></div></div>
     <div class="admin-panel" id="panel-add">
       <div class="form-card">
         <h3>// ADD FOLDER</h3>
@@ -370,12 +316,9 @@
           <div><div class="field-label">NAME</div><input class="field-input" id="new-folder-name" placeholder="E.G. ATTACK ON TITAN"/></div>
           <div><div class="field-label">ICON</div><input class="field-input" id="new-folder-icon" placeholder="📁" maxlength="4"/></div>
         </div>
-        <div class="form-grid full">
-          <div><div class="field-label">PARENT FOLDER</div><select class="field-select" id="new-folder-parent"></select></div>
-        </div>
+        <div class="form-grid full"><div><div class="field-label">PARENT FOLDER</div><select class="field-select" id="new-folder-parent"></select></div></div>
         <div class="form-btn-row"><button class="btn-primary" onclick="addFolder()">ADD FOLDER</button></div>
       </div>
-
       <div class="form-card">
         <h3>// ADD CHARACTER</h3>
         <div class="form-grid">
@@ -392,29 +335,19 @@
             </select>
           </div>
         </div>
-        <div class="form-grid full">
-          <div><div class="field-label">PARENT FOLDER</div><select class="field-select" id="new-char-parent"></select></div>
-        </div>
-        <div class="form-grid full">
-          <div><div class="field-label">TIKTOK LINK</div><input class="field-input" id="new-char-tiktok" placeholder="https://tiktok.com/@00fadevfx/video/..."/></div>
-        </div>
-        <div class="form-grid full">
-          <div><div class="field-label">VERDICT</div><input class="field-input" id="new-char-verdict" placeholder="COMBAT VERDICT: ..."/></div>
-        </div>
+        <div class="form-grid full"><div><div class="field-label">PARENT FOLDER</div><select class="field-select" id="new-char-parent"></select></div></div>
+        <div class="form-grid full"><div><div class="field-label">TIKTOK LINK</div><input class="field-input" id="new-char-tiktok" placeholder="https://tiktok.com/@00fadevfx/video/..."/></div></div>
+        <div class="form-grid full"><div><div class="field-label">VERDICT</div><input class="field-input" id="new-char-verdict" placeholder="COMBAT VERDICT: ..."/></div></div>
         <div class="field-label" style="margin-top:10px;margin-bottom:6px">STATS</div>
         <div class="stats-builder" id="new-stats-builder"></div>
         <button class="add-stat-btn" onclick="addStatRow('new-stats-builder')">+ ADD STAT</button>
         <div class="form-btn-row"><button class="btn-primary" onclick="addCharacter()">ADD CHARACTER</button></div>
       </div>
     </div>
-
-    <!-- ANNOUNCEMENT -->
     <div class="admin-panel" id="panel-announce">
       <div class="ann-form">
         <h3>// ANNOUNCEMENT BANNER</h3>
-        <div class="form-grid full">
-          <div><div class="field-label">MESSAGE</div><input class="field-input" id="ann-input" placeholder="E.G. GIYU EDIT DROPPING TONIGHT 🔥" maxlength="100" oninput="previewAnn(this.value)"/></div>
-        </div>
+        <div class="form-grid full"><div><div class="field-label">MESSAGE</div><input class="field-input" id="ann-input" placeholder="E.G. GIYU EDIT DROPPING TONIGHT 🔥" maxlength="100" oninput="previewAnn(this.value)"/></div></div>
         <div class="ann-preview" id="ann-preview"></div>
         <div class="form-btn-row">
           <button class="btn-primary" onclick="setAnnouncement()">PUBLISH</button>
@@ -422,11 +355,9 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- LOGIN MODAL -->
 <div class="modal-bg" id="modal">
   <div class="modal">
     <h2>// ADMIN ACCESS</h2>
@@ -439,7 +370,6 @@
   </div>
 </div>
 
-<!-- EDIT MODAL -->
 <div class="modal-bg" id="edit-modal">
   <div class="modal" style="width:min(500px,95vw);max-height:90vh;overflow-y:auto">
     <h2 id="edit-modal-title">// EDIT</h2>
@@ -454,12 +384,64 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// ── CONFIG ───────────────────────────────────────────
 const PASSWORD = 'Me627663?';
-const DB_KEY = 'fadevfx_db_v5';
-const SUGG_KEY = 'fadevfx_suggestions';
 const VOTED_KEY = 'fadevfx_voted';
-const ANN_KEY = 'fadevfx_announcement';
 
+// ── SUPABASE ─────────────────────────────────────────
+const SB_URL = 'https://lhkiynfnrxgktpgujkzk.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxoa2l5bmZucnhna3RwZ3Vqa3prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczOTY0NDUsImV4cCI6MjA5Mjk3MjQ0NX0.OAruaXFyEblYPWXKtrbDJQ_kGHv7owo8aF4bAae_9bc';
+
+async function sbFetch(path, method='GET', body=null) {
+  const opts = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SB_KEY,
+      'Authorization': `Bearer ${SB_KEY}`,
+      'Prefer': method==='POST' ? 'resolution=merge-duplicates' : ''
+    }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  try {
+    const res = await fetch(SB_URL + path, opts);
+    if (!res.ok) { console.error('SB error', res.status, await res.text()); return null; }
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
+  } catch(e) { console.error('SB fetch error', e); return null; }
+}
+
+// DB TREE
+async function loadDBTree() {
+  const rows = await sbFetch('/rest/v1/db_tree?id=eq.1');
+  if (rows && rows.length && rows[0].data) { dbTree = rows[0].data; }
+  renderDB();
+}
+async function saveDB() {
+  await sbFetch('/rest/v1/db_tree', 'POST', [{id:1, data: dbTree}]);
+}
+
+// SUGGESTIONS
+async function fetchSuggestions() {
+  const rows = await sbFetch('/rest/v1/suggestions?order=votes.desc');
+  return rows || [];
+}
+async function upsertSuggestion(s) { await sbFetch('/rest/v1/suggestions', 'POST', [s]); }
+async function updateSuggestion(id, fields) { await sbFetch(`/rest/v1/suggestions?id=eq.${id}`, 'PATCH', fields); }
+async function deleteSuggestion(id) { await sbFetch(`/rest/v1/suggestions?id=eq.${id}`, 'DELETE'); }
+
+// ANNOUNCEMENT
+async function fetchAnnouncement() {
+  const rows = await sbFetch('/rest/v1/announcement?id=eq.1');
+  return (rows && rows.length) ? rows[0].text : '';
+}
+async function saveAnnouncement(text) { await sbFetch('/rest/v1/announcement', 'POST', [{id:1, text}]); }
+
+// VOTED stays local per device
+function getVoted() { try { return new Set(JSON.parse(localStorage.getItem(VOTED_KEY))||[]); } catch(e){return new Set();} }
+function saveVoted(s) { localStorage.setItem(VOTED_KEY, JSON.stringify([...s])); }
+
+// ── STATE ────────────────────────────────────────────
 const DEFAULT_DB = {
   id:'root',name:'ROOT',type:'folder',
   children:[{
@@ -503,29 +485,21 @@ const DEFAULT_DB = {
   ]
 };
 
-// STATE
-let dbTree = JSON.parse(localStorage.getItem(DB_KEY)) || JSON.parse(JSON.stringify(DEFAULT_DB));
+let dbTree = JSON.parse(JSON.stringify(DEFAULT_DB));
 let path = [];
 let isAdmin = false;
 let adminFilter = 'all';
+let cachedSuggestions = [];
 
-function saveDB() { localStorage.setItem(DB_KEY, JSON.stringify(dbTree)); }
-function getSuggestions() { try { return JSON.parse(localStorage.getItem(SUGG_KEY))||[]; } catch(e){return[];} }
-function saveSuggestions(l) { localStorage.setItem(SUGG_KEY, JSON.stringify(l)); }
-function getVoted() { try { return new Set(JSON.parse(localStorage.getItem(VOTED_KEY))||[]); } catch(e){return new Set();} }
-function saveVoted(s) { localStorage.setItem(VOTED_KEY, JSON.stringify([...s])); }
-function getAnnouncement() { return localStorage.getItem(ANN_KEY)||''; }
-function saveAnnouncement(t) { localStorage.setItem(ANN_KEY, t); }
-
-// PAGE
+// ── PAGE ─────────────────────────────────────────────
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   const tab=document.getElementById('tab-'+id);
   if(tab) tab.classList.add('active');
-  if(id==='suggest') renderSuggestions();
-  if(id==='admin'){renderAdminDashboard();renderManageDB();populateFolderSelects();}
+  if(id==='suggest') loadAndRenderSuggestions();
+  if(id==='admin'){loadAndRenderSuggestions();renderManageDB();populateFolderSelects();}
   if(id==='db'){path=[];renderDB();}
 }
 
@@ -536,10 +510,10 @@ function switchAdminTab(tab,el){
   document.getElementById('panel-'+tab).classList.add('active');
   if(tab==='manage') renderManageDB();
   if(tab==='add') populateFolderSelects();
-  if(tab==='announce'){const a=getAnnouncement();if(a)document.getElementById('ann-input').value=a;}
+  if(tab==='announce'){fetchAnnouncement().then(a=>{if(a)document.getElementById('ann-input').value=a;});}
 }
 
-// DB HELPERS
+// ── DB HELPERS ────────────────────────────────────────
 function findNode(id,node){if(node.id===id)return node;if(node.children)for(const c of node.children){const f=findNode(id,c);if(f)return f;}return null;}
 function findParent(id,node){if(!node.children)return null;for(const c of node.children){if(c.id===id)return node;const f=findParent(id,c);if(f)return f;}return null;}
 function currentNode(){let node=dbTree;for(const id of path){node=node.children?.find(c=>c.id===id);if(!node)return dbTree;}return node;}
@@ -550,115 +524,88 @@ function getAllFolders(node,list=[]){if(node.type==='folder'){list.push({id:node
 function getAllChars(node,parentName='',list=[]){if(node.type==='file')list.push({...node,parentName});if(node.children)node.children.forEach(c=>getAllChars(c,node.name,list));return list;}
 function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 
-// HOME
+// ── HOME ─────────────────────────────────────────────
 function renderHome() {
-  const allChars = getAllChars(dbTree);
-  const completed = allChars.filter(c=>c.status==='complete').length;
-  const total = allChars.filter(c=>c.type==='file').length;
-  const soon = allChars.filter(c=>c.status==='coming-soon').length;
-
+  const allChars=getAllChars(dbTree);
+  const completed=allChars.filter(c=>c.status==='complete').length;
+  const total=allChars.filter(c=>c.type==='file').length;
+  const soon=allChars.filter(c=>c.status==='coming-soon').length;
   document.getElementById('home-stats').innerHTML=`
     <div class="home-stat"><div class="home-stat-val">${completed}</div><div class="home-stat-label">EDITS DONE</div></div>
     <div class="home-stat"><div class="home-stat-val">${total}</div><div class="home-stat-label">TOTAL CHARS</div></div>
-    <div class="home-stat"><div class="home-stat-val" style="color:var(--gold)">${soon}</div><div class="home-stat-label">COMING SOON</div></div>
-  `;
-
-  // recently added — last 4 complete chars sorted by addedAt
-  const recent = [...allChars].filter(c=>c.status==='complete'&&c.addedAt).sort((a,b)=>b.addedAt-a.addedAt).slice(0,4);
-  const now = Date.now();
-  document.getElementById('recent-grid').innerHTML = recent.length ? recent.map((c,i)=>{
-    const isNew = (now - (c.addedAt||0)) < 86400000*3;
+    <div class="home-stat"><div class="home-stat-val" style="color:var(--gold)">${soon}</div><div class="home-stat-label">COMING SOON</div></div>`;
+  const recent=[...allChars].filter(c=>c.status==='complete'&&c.addedAt).sort((a,b)=>b.addedAt-a.addedAt).slice(0,4);
+  const now=Date.now();
+  document.getElementById('recent-grid').innerHTML=recent.length?recent.map((c,i)=>{
+    const isNew=(now-(c.addedAt||0))<86400000*3;
     return `<div class="recent-item" onclick="openCharDirect('${c.id}')">
       ${isNew&&i===0?'<div class="new-badge">NEW</div>':''}
       <div class="recent-icon">${c.icon||'📄'}</div>
       <div class="recent-name">${c.name}</div>
       <div class="recent-sub">${c.parentName}</div>
     </div>`;
-  }).join('') : '<div style="color:var(--text-dim);font-size:9px;letter-spacing:2px">NO EDITS YET</div>';
+  }).join(''):'<div style="color:var(--text-dim);font-size:9px;letter-spacing:2px">NO EDITS YET</div>';
 }
 
-function openCharDirect(id) {
-  path = [];
-  renderDB();
-  const node = findNode(id, dbTree);
-  if (node) renderChar(node);
-}
+function openCharDirect(id){path=[];renderDB();const node=findNode(id,dbTree);if(node)renderChar(node);}
 
-// SEARCH
-function handleSearch(val) {
-  const resultsEl = document.getElementById('search-results');
-  const recentSection = document.getElementById('recently-added-section');
-  if (!val.trim()) { resultsEl.style.display='none'; recentSection.style.display='block'; return; }
-  recentSection.style.display='none';
-  resultsEl.style.display='block';
-  const q = val.trim().toUpperCase();
-  const allChars = getAllChars(dbTree).filter(c=>c.type==='file');
-  const matches = allChars.filter(c=>c.name.includes(q)||(c.title||'').toUpperCase().includes(q)||(c.parentName||'').toUpperCase().includes(q));
-  if (!matches.length) { resultsEl.innerHTML=`<div class="empty" style="padding:20px">NO RESULTS FOR "${val.toUpperCase()}"</div>`; return; }
-  resultsEl.innerHTML = matches.map(c=>{
-    const statusColor=c.status==='complete'?'var(--green)':c.status==='coming-soon'?'var(--gold)':'var(--red)';
-    const statusTxt=c.status==='complete'?'COMPLETE':c.status==='coming-soon'?'COMING SOON':'LOCKED';
+// ── SEARCH ────────────────────────────────────────────
+function handleSearch(val){
+  const resultsEl=document.getElementById('search-results');
+  const recentSection=document.getElementById('recently-added-section');
+  if(!val.trim()){resultsEl.style.display='none';recentSection.style.display='block';return;}
+  recentSection.style.display='none';resultsEl.style.display='block';
+  const q=val.trim().toUpperCase();
+  const matches=getAllChars(dbTree).filter(c=>c.type==='file'&&(c.name.includes(q)||(c.title||'').toUpperCase().includes(q)||(c.parentName||'').toUpperCase().includes(q)));
+  if(!matches.length){resultsEl.innerHTML=`<div class="empty" style="padding:20px">NO RESULTS FOR "${val.toUpperCase()}"</div>`;return;}
+  resultsEl.innerHTML=matches.map(c=>{
+    const sc=c.status==='complete'?'var(--green)':c.status==='coming-soon'?'var(--gold)':'var(--red)';
+    const st=c.status==='complete'?'COMPLETE':c.status==='coming-soon'?'COMING SOON':'LOCKED';
     return `<div class="search-result-item" onclick="openCharDirect('${c.id}')">
       <div class="sr-icon">${c.icon||'📄'}</div>
-      <div class="sr-info">
-        <div class="sr-name">${c.name}</div>
-        <div class="sr-path">${c.parentName} · ${c.title||''}</div>
-      </div>
-      <div class="sr-status" style="color:${statusColor}">${statusTxt}</div>
+      <div class="sr-info"><div class="sr-name">${c.name}</div><div class="sr-path">${c.parentName} · ${c.title||''}</div></div>
+      <div class="sr-status" style="color:${sc}">${st}</div>
     </div>`;
   }).join('');
 }
 
-// DB RENDER
-function renderDB() {
+// ── DB RENDER ─────────────────────────────────────────
+function renderDB(){
   document.getElementById('search-input').value='';
   document.getElementById('search-results').style.display='none';
   document.getElementById('recently-added-section').style.display='block';
-
-  const node = currentNode();
-  updateBreadcrumb();
-  const el = document.getElementById('db-content');
-  const homeView = document.getElementById('home-view');
-
-  if (path.length===0) { homeView.style.display='block'; renderHome(); } 
-  else { homeView.style.display='none'; }
-
-  if (node.type==='file') { renderChar(node); return; }
-  let html = path.length>0?`<div class="back-btn" onclick="goBack()">← BACK</div>`:'';
-  if (path.length>0) {
-    html+=`<div class="folder-header"><div class="folder-title">${node.name}</div><div class="folder-meta">${countDone(node)}/${countAll(node)} COMPLETE</div></div>`;
-  }
+  const node=currentNode();updateBreadcrumb();
+  const el=document.getElementById('db-content');
+  const homeView=document.getElementById('home-view');
+  if(path.length===0){homeView.style.display='block';renderHome();}else{homeView.style.display='none';}
+  if(node.type==='file'){renderChar(node);return;}
+  let html=path.length>0?`<div class="back-btn" onclick="goBack()">← BACK</div>`:'';
+  if(path.length>0)html+=`<div class="folder-header"><div class="folder-title">${node.name}</div><div class="folder-meta">${countDone(node)}/${countAll(node)} COMPLETE</div></div>`;
   html+=`<div class="file-grid">`;
   for(const item of node.children||[]){
-    const locked=item.status==='locked';
-    const soon=item.status==='coming-soon';
+    const locked=item.status==='locked',soon=item.status==='coming-soon';
     const done=item.status==='complete'||(item.type==='folder'&&allComplete(item));
     const cls=locked?'locked':soon?'coming-soon':done?'complete':'';
     html+=`<div class="file-item ${cls}" onclick="openItem('${item.id}')">
-      ${done&&!locked?'<div class="corner-dot"></div>':''}
-      ${soon?'<div class="corner-dot soon"></div>':''}
+      ${done&&!locked?'<div class="corner-dot"></div>':''}${soon?'<div class="corner-dot soon"></div>':''}
       <div class="file-icon">${item.icon||'📁'}</div>
       <div class="file-name">${item.name}</div>
       <div class="file-badge ${locked?'badge-lock':soon?'badge-soon':done?'badge-done':''}">${locked?'[ LOCKED ]':soon?'[ COMING SOON ]':done?'[ COMPLETE ]':item.type==='folder'?'[ FOLDER ]':''}</div>
     </div>`;
   }
-  html+='</div>';
-  el.innerHTML=html;
+  html+='</div>';el.innerHTML=html;
 }
 
 function openItem(id){
-  const node=findNode(id,dbTree);
-  if(!node)return;
+  const node=findNode(id,dbTree);if(!node)return;
   if(node.status==='locked'){showToast('FILE LOCKED');return;}
   if(node.status==='coming-soon'){showToast('EDIT COMING SOON 👀');return;}
-  if(node.type==='folder'){path.push(id);renderDB();}
-  else renderChar(node);
+  if(node.type==='folder'){path.push(id);renderDB();}else renderChar(node);
 }
 function goBack(){path.pop();renderDB();}
 
 function renderChar(node){
-  updateBreadcrumb();
-  document.getElementById('home-view').style.display='none';
+  updateBreadcrumb();document.getElementById('home-view').style.display='none';
   const el=document.getElementById('db-content');
   const statsHtml=Object.entries(node.stats||{}).map(([k,v])=>`<div class="panel-stat"><span class="stat-k">${k}</span><span class="stat-v">${v}</span></div>`).join('');
   const watchBtn=node.tiktok?`<a class="watch-btn" href="${node.tiktok}" target="_blank" rel="noopener">▶ WATCH EDIT</a>`:'';
@@ -682,50 +629,57 @@ function renderChar(node){
   </div>`;
 }
 
-function shareChar(url, name) {
-  if (navigator.share) {
-    navigator.share({ title: `@00fadevfx — ${name} EDIT`, url }).catch(()=>{});
-  } else {
-    navigator.clipboard.writeText(url).then(()=>showToast('LINK COPIED!')).catch(()=>showToast('COPY FAILED'));
-  }
+function shareChar(url,name){
+  if(navigator.share){navigator.share({title:`@00fadevfx — ${name} EDIT`,url}).catch(()=>{});}
+  else{navigator.clipboard.writeText(url).then(()=>showToast('LINK COPIED!')).catch(()=>showToast('COPY FAILED'));}
 }
 
 function updateBreadcrumb(){
   const bc=document.getElementById('breadcrumb');
   if(path.length===0){bc.innerHTML='';return;}
-  let html=`<span onclick="path=[];renderDB()">ROOT</span>`;
-  let acc=[];
-  for(const id of path){
-    acc.push(id);
-    const copy=[...acc];
-    const node=findNode(id,dbTree);
-    const isLast=id===path[path.length-1];
-    html+=`<span class="sep">/</span><span class="${isLast?'active':''}" onclick="path=${JSON.stringify(copy)};renderDB()">${node?.name||id}</span>`;
-  }
+  let html=`<span onclick="path=[];renderDB()">ROOT</span>`;let acc=[];
+  for(const id of path){acc.push(id);const copy=[...acc];const node=findNode(id,dbTree);const isLast=id===path[path.length-1];
+    html+=`<span class="sep">/</span><span class="${isLast?'active':''}" onclick="path=${JSON.stringify(copy)};renderDB()">${node?.name||id}</span>`;}
   bc.innerHTML=html;
 }
 
-// SUGGESTIONS
-function submitSuggestion(){
+// ── SUGGESTIONS ───────────────────────────────────────
+async function loadAndRenderSuggestions(){
+  cachedSuggestions=await fetchSuggestions();
+  renderSuggestions();
+  if(isAdmin)renderAdminDashboard();
+}
+
+async function submitSuggestion(){
   const char=document.getElementById('inp-char').value.trim().toUpperCase();
   const anime=document.getElementById('inp-anime').value.trim().toUpperCase();
   if(!char||!anime){showToast('FILL IN BOTH FIELDS');return;}
-  const suggestions=getSuggestions();const voted=getVoted();
-  const exists=suggestions.find(s=>s.char===char&&s.anime===anime);
-  if(exists){if(voted.has(exists.id)){showToast('ALREADY VOTED');return;}exists.votes++;voted.add(exists.id);saveVoted(voted);showToast('UPVOTED!');}
-  else{const id=genId();suggestions.push({id,char,anime,votes:1,status:'pending',date:Date.now()});voted.add(id);saveVoted(voted);showToast('SUBMITTED!');}
-  saveSuggestions(suggestions);
+  const voted=getVoted();
+  const exists=cachedSuggestions.find(s=>s.char===char&&s.anime===anime);
+  if(exists){
+    if(voted.has(exists.id)){showToast('ALREADY VOTED');return;}
+    await updateSuggestion(exists.id,{votes:exists.votes+1});
+    voted.add(exists.id);saveVoted(voted);showToast('UPVOTED!');
+  } else {
+    const id=genId();
+    await upsertSuggestion({id,char,anime,votes:1,status:'pending',date:Date.now()});
+    voted.add(id);saveVoted(voted);showToast('SUBMITTED!');
+  }
   document.getElementById('inp-char').value='';document.getElementById('inp-anime').value='';
-  renderSuggestions();
+  await loadAndRenderSuggestions();
 }
-function vote(id){
+
+async function vote(id){
   const voted=getVoted();if(voted.has(id)){showToast('ALREADY VOTED');return;}
-  const s=getSuggestions();const item=s.find(x=>x.id===id);if(!item)return;
-  item.votes++;voted.add(id);saveVoted(voted);saveSuggestions(s);renderSuggestions();showToast('VOTED!');
+  const item=cachedSuggestions.find(x=>x.id===id);if(!item)return;
+  await updateSuggestion(id,{votes:item.votes+1});
+  voted.add(id);saveVoted(voted);
+  await loadAndRenderSuggestions();showToast('VOTED!');
 }
+
 function renderSuggestions(){
-  const s=getSuggestions();const voted=getVoted();
-  const sorted=[...s].sort((a,b)=>b.votes-a.votes);
+  const voted=getVoted();
+  const sorted=[...cachedSuggestions].sort((a,b)=>b.votes-a.votes);
   document.getElementById('suggest-count').textContent=`${sorted.length} TOTAL`;
   const list=document.getElementById('suggest-list');
   if(!sorted.length){list.innerHTML=`<div class="empty">NO SUGGESTIONS YET.<br>BE THE FIRST.</div>`;return;}
@@ -741,20 +695,17 @@ function renderSuggestions(){
   }).join('');
 }
 
-// ADMIN DASHBOARD
-function setFilter(f,el){
-  adminFilter=f;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');renderAdminDashboard();
-}
+// ── ADMIN ─────────────────────────────────────────────
+function setFilter(f,el){adminFilter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderAdminDashboard();}
+
 function renderAdminDashboard(){
-  const s=getSuggestions();
+  const s=cachedSuggestions;
   document.getElementById('stat-total').textContent=s.length;
   document.getElementById('stat-pending').textContent=s.filter(x=>x.status==='pending').length;
   document.getElementById('stat-wip').textContent=s.filter(x=>x.status==='inprogress').length;
   document.getElementById('stat-done').textContent=s.filter(x=>x.status==='completed').length;
   let filtered=[...s].sort((a,b)=>b.votes-a.votes);
-  if(adminFilter!=='all') filtered=filtered.filter(x=>x.status===adminFilter);
+  if(adminFilter!=='all')filtered=filtered.filter(x=>x.status===adminFilter);
   const list=document.getElementById('admin-list');
   if(!filtered.length){list.innerHTML=`<div class="empty">NOTHING HERE.</div>`;return;}
   list.innerHTML=filtered.map(s=>{
@@ -775,26 +726,29 @@ function renderAdminDashboard(){
     </div>`;
   }).join('');
 }
-function adminSet(id,status){const s=getSuggestions();const item=s.find(x=>x.id===id);if(item){item.status=status;saveSuggestions(s);renderAdminDashboard();renderSuggestions();showToast('UPDATED');}}
-function adminDel(id){saveSuggestions(getSuggestions().filter(s=>s.id!==id));renderAdminDashboard();renderSuggestions();showToast('DELETED');}
 
-// ANNOUNCEMENT
+async function adminSet(id,status){await updateSuggestion(id,{status});await loadAndRenderSuggestions();showToast('UPDATED');}
+async function adminDel(id){await deleteSuggestion(id);await loadAndRenderSuggestions();showToast('DELETED');}
+
+// ── ANNOUNCEMENT ──────────────────────────────────────
 function previewAnn(val){const p=document.getElementById('ann-preview');p.textContent=val||'';p.classList.toggle('visible',!!val);}
-function setAnnouncement(){
+async function setAnnouncement(){
   const val=document.getElementById('ann-input').value.trim();
   if(!val){showToast('ENTER A MESSAGE');return;}
-  saveAnnouncement(val);renderAnnouncement();showToast('ANNOUNCEMENT PUBLISHED');
+  await saveAnnouncement(val);await renderAnnouncement();showToast('ANNOUNCEMENT PUBLISHED');
 }
-function clearAnnouncement(){saveAnnouncement('');renderAnnouncement();document.getElementById('ann-input').value='';showToast('BANNER CLEARED');}
-function renderAnnouncement(){
-  const text=getAnnouncement();
+async function clearAnnouncement(){
+  await saveAnnouncement('');await renderAnnouncement();
+  document.getElementById('ann-input').value='';showToast('BANNER CLEARED');
+}
+async function renderAnnouncement(){
+  const text=await fetchAnnouncement();
   const banner=document.getElementById('ann-banner');
-  const textEl=document.getElementById('ann-text');
-  if(text){banner.classList.add('visible');textEl.textContent=text;}
+  if(text){banner.classList.add('visible');document.getElementById('ann-text').textContent=text;}
   else{banner.classList.remove('visible');}
 }
 
-// MANAGE DB
+// ── MANAGE DB ─────────────────────────────────────────
 function renderManageDB(){
   const el=document.getElementById('manage-content');
   let html=`<div style="font-size:9px;letter-spacing:4px;color:var(--text-dim);margin-bottom:12px;font-family:'Rajdhani',sans-serif">FOLDERS</div>`;
@@ -804,19 +758,18 @@ function renderManageDB(){
   });
   html+=`<div style="font-size:9px;letter-spacing:4px;color:var(--text-dim);margin:20px 0 12px;font-family:'Rajdhani',sans-serif">CHARACTERS</div>`;
   getAllChars(dbTree).forEach(c=>{
-    const statusColor=c.status==='complete'?'var(--green)':c.status==='coming-soon'?'var(--gold)':'var(--red)';
-    html+=`<div class="db-item"><div class="db-item-icon">${c.icon||'📄'}</div><div class="db-item-info"><div class="db-item-name">${c.name}</div><div class="db-item-sub" style="color:${statusColor}">${c.status.toUpperCase()}${c.tiktok?' · 🔗':''}</div></div><div class="db-item-actions"><button class="act-btn act-edit" onclick="editCharacter('${c.id}')">EDIT</button><button class="act-btn act-del" onclick="deleteNode('${c.id}')">DELETE</button></div></div>`;
+    const sc=c.status==='complete'?'var(--green)':c.status==='coming-soon'?'var(--gold)':'var(--red)';
+    html+=`<div class="db-item"><div class="db-item-icon">${c.icon||'📄'}</div><div class="db-item-info"><div class="db-item-name">${c.name}</div><div class="db-item-sub" style="color:${sc}">${c.status.toUpperCase()}${c.tiktok?' · 🔗':''}</div></div><div class="db-item-actions"><button class="act-btn act-edit" onclick="editCharacter('${c.id}')">EDIT</button><button class="act-btn act-del" onclick="deleteNode('${c.id}')">DELETE</button></div></div>`;
   });
   el.innerHTML=html;
 }
 
-// ADD FOLDER/CHAR
 function populateFolderSelects(){
-  const folders=getAllFolders(dbTree);
-  const opts=folders.map(f=>`<option value="${f.id}">${f.name}</option>`).join('');
+  const opts=getAllFolders(dbTree).map(f=>`<option value="${f.id}">${f.name}</option>`).join('');
   ['new-folder-parent','new-char-parent'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});
 }
-function addFolder(){
+
+async function addFolder(){
   const name=document.getElementById('new-folder-name').value.trim().toUpperCase();
   const icon=document.getElementById('new-folder-icon').value.trim()||'📁';
   const parentId=document.getElementById('new-folder-parent').value;
@@ -824,9 +777,10 @@ function addFolder(){
   const parent=findNode(parentId,dbTree);if(!parent)return;
   if(!parent.children)parent.children=[];
   parent.children.push({id:genId(),name,type:'folder',icon,children:[]});
-  saveDB();renderDB();renderManageDB();populateFolderSelects();
+  await saveDB();renderDB();renderManageDB();populateFolderSelects();
   document.getElementById('new-folder-name').value='';showToast('FOLDER ADDED');
 }
+
 function addStatRow(cid,k='',v=''){
   const container=document.getElementById(cid);
   const row=document.createElement('div');row.className='stat-row-builder';
@@ -837,7 +791,8 @@ function getStats(cid){
   const rows=document.querySelectorAll(`#${cid} .stat-row-builder`);const stats={};
   rows.forEach(r=>{const i=r.querySelectorAll('.field-input');const k=i[0].value.trim().toUpperCase();const v=i[1].value.trim();if(k&&v)stats[k]=v;});return stats;
 }
-function addCharacter(){
+
+async function addCharacter(){
   const name=document.getElementById('new-char-name').value.trim().toUpperCase();
   const icon=document.getElementById('new-char-icon').value.trim()||'📄';
   const title=document.getElementById('new-char-title').value.trim().toUpperCase();
@@ -850,33 +805,31 @@ function addCharacter(){
   const parent=findNode(parentId,dbTree);if(!parent)return;
   if(!parent.children)parent.children=[];
   parent.children.push({id:genId(),name,type:'file',status,icon,title,tiktok,verdict,stats,addedAt:Date.now()});
-  saveDB();renderDB();renderManageDB();
+  await saveDB();renderDB();renderManageDB();
   ['new-char-name','new-char-icon','new-char-title','new-char-tiktok','new-char-verdict'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('new-stats-builder').innerHTML='';
-  showToast('CHARACTER ADDED');
+  document.getElementById('new-stats-builder').innerHTML='';showToast('CHARACTER ADDED');
 }
 
-// DELETE
-function deleteNode(id){
+async function deleteNode(id){
   const parent=findParent(id,dbTree);if(!parent)return;
   parent.children=parent.children.filter(c=>c.id!==id);
-  saveDB();renderDB();renderManageDB();populateFolderSelects();showToast('DELETED');
+  await saveDB();renderDB();renderManageDB();populateFolderSelects();showToast('DELETED');
 }
 
-// EDIT
 function editFolder(id){
   const node=findNode(id,dbTree);if(!node)return;
   document.getElementById('edit-modal-title').textContent='// EDIT FOLDER';
   document.getElementById('edit-modal-body').innerHTML=`
     <div style="margin-bottom:8px"><div class="field-label">NAME</div><input class="field-input" id="ef-name" value="${node.name}"/></div>
     <div><div class="field-label">ICON</div><input class="field-input" id="ef-icon" value="${node.icon||'📁'}" maxlength="4"/></div>`;
-  document.getElementById('edit-modal-confirm').onclick=()=>{
+  document.getElementById('edit-modal-confirm').onclick=async()=>{
     node.name=document.getElementById('ef-name').value.trim().toUpperCase()||node.name;
     node.icon=document.getElementById('ef-icon').value.trim()||node.icon;
-    saveDB();renderDB();renderManageDB();closeEditModal();showToast('UPDATED');
+    await saveDB();renderDB();renderManageDB();closeEditModal();showToast('UPDATED');
   };
   document.getElementById('edit-modal').classList.add('visible');
 }
+
 function editCharacter(id){
   const node=findNode(id,dbTree);if(!node)return;
   const builderHtml=Object.entries(node.stats||{}).map(([k,v])=>`<div class="stat-row-builder"><input class="field-input" placeholder="LABEL" value="${k}" style="flex:1"/><input class="field-input" placeholder="VALUE" value="${v}" style="flex:1.5"/><button class="remove-stat" onclick="this.parentElement.remove()">×</button></div>`).join('');
@@ -901,7 +854,7 @@ function editCharacter(id){
     <div class="field-label" style="margin-bottom:6px">STATS</div>
     <div class="stats-builder" id="ec-stats-builder">${builderHtml}</div>
     <button class="add-stat-btn" onclick="addStatRow('ec-stats-builder')">+ ADD STAT</button>`;
-  document.getElementById('edit-modal-confirm').onclick=()=>{
+  document.getElementById('edit-modal-confirm').onclick=async()=>{
     node.name=document.getElementById('ec-name').value.trim().toUpperCase()||node.name;
     node.icon=document.getElementById('ec-icon').value.trim()||node.icon;
     node.title=document.getElementById('ec-title').value.trim().toUpperCase();
@@ -909,14 +862,15 @@ function editCharacter(id){
     node.tiktok=document.getElementById('ec-tiktok').value.trim();
     node.verdict=document.getElementById('ec-verdict').value.trim().toUpperCase();
     node.stats=getStats('ec-stats-builder');
-    saveDB();renderDB();renderManageDB();closeEditModal();showToast('UPDATED');
+    await saveDB();renderDB();renderManageDB();closeEditModal();showToast('UPDATED');
   };
   document.getElementById('edit-modal').classList.add('visible');
 }
+
 function closeEditModal(){document.getElementById('edit-modal').classList.remove('visible');}
 document.getElementById('edit-modal').addEventListener('click',e=>{if(e.target===document.getElementById('edit-modal'))closeEditModal();});
 
-// AUTH
+// ── AUTH ──────────────────────────────────────────────
 function handleAdminClick(){if(isAdmin){logout();return;}document.getElementById('modal').classList.add('visible');setTimeout(()=>document.getElementById('modal-pw').focus(),100);}
 function checkPassword(){
   if(document.getElementById('modal-pw').value===PASSWORD){
@@ -928,14 +882,18 @@ function logout(){isAdmin=false;document.getElementById('adminBtn').classList.re
 function closeModal(){document.getElementById('modal').classList.remove('visible');document.getElementById('modal-pw').value='';document.getElementById('modal-err').style.display='none';}
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
 
-// TOAST
+// ── TOAST ─────────────────────────────────────────────
 let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);}
 
-// INIT
-renderDB();
-renderSuggestions();
-renderAnnouncement();
+// ── INIT ──────────────────────────────────────────────
+async function init(){
+  renderDB(); // show default immediately
+  await loadDBTree(); // pull real data from Supabase
+  await loadAndRenderSuggestions();
+  await renderAnnouncement();
+}
+init();
 </script>
 </body>
 </html>

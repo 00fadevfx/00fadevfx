@@ -105,6 +105,43 @@
   .watch-btn:hover { background: #ddd; transform: translateY(-1px); }
   .share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; background: transparent; color: var(--text-dim); border: 1px solid var(--border); font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
   .share-btn:hover { color: #fff; border-color: var(--border-bright); }
+
+  /* VIEWS */
+  .panel-views { font-size: 8px; letter-spacing: 3px; color: var(--text-dim); margin-top: 8px; font-family: 'Rajdhani', sans-serif; }
+  .panel-views span { color: #fff; font-size: 11px; font-family: 'Orbitron', monospace; font-weight: 700; }
+
+  /* REACTIONS */
+  .reactions-section { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .reactions-label { font-size: 7px; letter-spacing: 3px; color: var(--text-dim); margin-bottom: 8px; font-family: 'Rajdhani', sans-serif; }
+  .reactions-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .reaction-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; border: 1px solid var(--border); background: var(--accent-soft); cursor: pointer; transition: all 0.2s; font-size: 14px; -webkit-tap-highlight-color: transparent; }
+  .reaction-btn:hover { border-color: var(--border-bright); background: rgba(255,255,255,0.08); transform: scale(1.05); }
+  .reaction-btn.reacted { border-color: var(--gold); background: rgba(255,224,102,0.1); }
+  .reaction-count { font-size: 10px; color: #fff; font-family: 'Orbitron', monospace; font-weight: 700; }
+
+  /* COMMENTS */
+  .comments-section { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .comments-label { font-size: 7px; letter-spacing: 3px; color: var(--text-dim); margin-bottom: 10px; font-family: 'Rajdhani', sans-serif; }
+  .comment-form { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .comment-name-input { width: 120px; background: var(--bg2); border: 1px solid var(--border); color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 10px; padding: 8px 10px; outline: none; flex-shrink: 0; }
+  .comment-text-input { flex: 1; min-width: 150px; background: var(--bg2); border: 1px solid var(--border); color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 10px; padding: 8px 10px; outline: none; }
+  .comment-name-input:focus, .comment-text-input:focus { border-color: var(--border-bright); }
+  .comment-name-input::placeholder, .comment-text-input::placeholder { color: var(--text-dim); }
+  .comment-submit { padding: 8px 14px; background: #fff; color: #000; border: none; font-family: 'Orbitron', monospace; font-size: 8px; letter-spacing: 1px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+  .comment-submit:hover { background: #ddd; }
+  .comment-item { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .comment-item:last-child { border-bottom: none; }
+  .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+  .comment-author { font-size: 9px; letter-spacing: 1px; color: var(--gold); font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+  .comment-time { font-size: 7px; letter-spacing: 1px; color: var(--text-dim); }
+  .comment-text { font-size: 10px; color: var(--text-mid); letter-spacing: 0.5px; line-height: 1.4; }
+  .comment-del { font-size: 7px; color: var(--red); cursor: pointer; margin-left: 8px; opacity: 0.6; }
+  .comment-del:hover { opacity: 1; }
+  .no-comments { font-size: 9px; letter-spacing: 2px; color: var(--text-dim); padding: 10px 0; }
+
+  /* RANDOM BTN */
+  .random-btn { display: flex; align-items: center; gap: 8px; padding: 12px 20px; border: 1px solid var(--border); background: var(--accent-soft); color: var(--text-mid); font-family: 'Orbitron', monospace; font-size: 9px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; margin-bottom: 20px; width: 100%; justify-content: center; }
+  .random-btn:hover { border-color: var(--border-bright); color: #fff; background: rgba(255,255,255,0.08); }
   .suggest-form { border: 1px solid var(--border); background: var(--bg3); padding: 18px; margin-bottom: 20px; }
   .suggest-form h2 { font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 3px; margin-bottom: 14px; }
   .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -258,6 +295,7 @@
       <div class="recent-grid" id="recent-grid"></div>
       <div class="section-header"><div class="section-title">// BROWSE ALL</div></div>
       <div class="section-divider"></div>
+      <button class="random-btn" onclick="openRandomChar()">🎲 RANDOM CHARACTER FILE</button>
     </div>
   </div>
   <div class="breadcrumb" id="breadcrumb"></div>
@@ -345,7 +383,10 @@
           </div>
         </div>
         <div class="form-grid full"><div><div class="field-label">PARENT FOLDER</div><select class="field-select" id="new-char-parent"></select></div></div>
-        <div class="form-grid full"><div><div class="field-label">TIKTOK LINK</div><input class="field-input" id="new-char-tiktok" placeholder="https://tiktok.com/@00fadevfx/video/..."/></div></div>
+        <div class="form-grid full"><div><div class="field-label">TIKTOK LINK 1</div><input class="field-input" id="new-char-tiktok" placeholder="https://tiktok.com/@00fadevfx/video/..."/></div></div>
+        <div class="form-grid full"><div><div class="field-label">TIKTOK LINK 2 (OPTIONAL)</div><input class="field-input" id="new-char-tiktok2" placeholder="https://tiktok.com/@00fadevfx/video/..."/></div></div>
+        <div class="form-grid full"><div><div class="field-label">TIKTOK LINK 3 (OPTIONAL)</div><input class="field-input" id="new-char-tiktok3" placeholder="https://tiktok.com/@00fadevfx/video/..."/></div></div>
+        <div class="form-grid full"><div><div class="field-label">TOTAL VIEWS (E.G. 2.4M)</div><input class="field-input" id="new-char-views" placeholder="E.G. 2.4M"/></div></div>
         <div class="form-grid full"><div><div class="field-label">VERDICT</div><input class="field-input" id="new-char-verdict" placeholder="COMBAT VERDICT: ..."/></div></div>
         <div class="field-label" style="margin-top:10px;margin-bottom:6px">STATS</div>
         <div class="stats-builder" id="new-stats-builder"></div>
@@ -450,6 +491,28 @@ function sendNotification(char, anime) {
 }
 async function updateSuggestion(id, fields) { await sbFetch(`/rest/v1/suggestions?id=eq.${id}`, 'PATCH', fields); }
 async function deleteSuggestion(id) { await sbFetch(`/rest/v1/suggestions?id=eq.${id}`, 'DELETE'); }
+
+// REACTIONS
+async function fetchReactions(charId) {
+  const rows = await sbFetch(`/rest/v1/reactions?char_id=eq.${charId}`);
+  return rows || [];
+}
+async function upsertReaction(charId, emoji, count) {
+  await sbFetch('/rest/v1/reactions', 'POST', [{char_id: charId, emoji, count}]);
+}
+
+// COMMENTS
+async function fetchComments(charId) {
+  const rows = await sbFetch(`/rest/v1/comments?char_id=eq.${charId}&order=created_at.desc`);
+  return rows || [];
+}
+async function addComment(charId, author, text) {
+  const id = genId();
+  await sbFetch('/rest/v1/comments', 'POST', [{id, char_id: charId, author, text, created_at: new Date().toISOString()}]);
+}
+async function deleteComment(id) {
+  await sbFetch(`/rest/v1/comments?id=eq.${id}`, 'DELETE');
+}
 
 // ANNOUNCEMENT
 async function fetchAnnouncement() {
@@ -683,8 +746,10 @@ function renderChar(node){
   updateBreadcrumb();document.getElementById('home-view').style.display='none';
   const el=document.getElementById('db-content');
   const statsHtml=Object.entries(node.stats||{}).map(([k,v])=>`<div class="panel-stat"><span class="stat-k">${k}</span><span class="stat-v">${v}</span></div>`).join('');
-  const watchBtn=node.tiktok?`<a class="watch-btn" href="${node.tiktok}" target="_blank" rel="noopener">▶ WATCH EDIT</a>`:'';
-  const shareBtn=node.tiktok?`<button class="share-btn" onclick="shareChar('${node.tiktok}','${node.name}')">⤴ SHARE</button>`:'';
+  const links=[node.tiktok,node.tiktok2,node.tiktok3].filter(Boolean);
+  const watchBtns=links.map((url,i)=>`<a class="watch-btn" href="${url}" target="_blank" rel="noopener">▶ ${links.length>1?`EDIT ${i+1}`:'WATCH EDIT'}</a>`).join('');
+  const shareBtn=links.length>0?`<button class="share-btn" onclick="shareChar('${links[0]}','${node.name}')">⤴ SHARE</button>`:'';
+  const viewsHtml=node.views?`<div class="panel-views"><span>${node.views}</span> TOTAL VIEWS</div>`:'';
   el.innerHTML=`<div class="char-panel">
     <div class="back-btn" onclick="goBack()">← BACK</div>
     <div class="panel-card">
@@ -699,14 +764,116 @@ function renderChar(node){
       <div class="panel-divider"></div>
       ${statsHtml}
       ${node.verdict?`<div class="panel-verdict">${node.verdict}</div>`:''}
-      <div class="panel-actions">${watchBtn}${shareBtn}</div>
+      ${viewsHtml}
+      <div class="panel-actions">${watchBtns}${shareBtn}</div>
+      <div class="reactions-section">
+        <div class="reactions-label">// REACTIONS</div>
+        <div class="reactions-row" id="reactions-${node.id}"><div style="font-size:9px;color:var(--text-dim);letter-spacing:2px">LOADING...</div></div>
+      </div>
+      <div class="comments-section">
+        <div class="comments-label">// COMMENTS</div>
+        <div class="comment-form">
+          <input class="comment-name-input" id="cname-${node.id}" placeholder="YOUR NAME" maxlength="20"/>
+          <input class="comment-text-input" id="ctext-${node.id}" placeholder="LEAVE A COMMENT..." maxlength="150"/>
+          <button class="comment-submit" onclick="submitComment('${node.id}')">POST</button>
+        </div>
+        <div id="comments-${node.id}"><div class="no-comments">LOADING...</div></div>
+      </div>
     </div>
   </div>`;
+  loadReactions(node.id);
+  loadComments(node.id);
 }
 
 function shareChar(url,name){
   if(navigator.share){navigator.share({title:`@00fadevfx — ${name} EDIT`,url}).catch(()=>{});}
   else{navigator.clipboard.writeText(url).then(()=>showToast('LINK COPIED!')).catch(()=>showToast('COPY FAILED'));}
+}
+
+// ── RANDOM CHARACTER ─────────────────────────────────
+function openRandomChar(){
+  const all=getAllChars(dbTree).filter(c=>c.status==='complete');
+  if(!all.length){showToast('NO COMPLETED EDITS YET');return;}
+  const pick=all[Math.floor(Math.random()*all.length)];
+  openCharDirect(pick.id);
+  showToast(`🎲 OPENING ${pick.name}...`);
+}
+
+// ── REACTIONS ─────────────────────────────────────────
+const EMOJIS = ['🔥','💀','👑','🤯','❤️'];
+
+async function loadReactions(charId){
+  const el=document.getElementById(`reactions-${charId}`);
+  if(!el)return;
+  const rows=await fetchReactions(charId);
+  const voted=JSON.parse(localStorage.getItem('reacted_'+charId)||'[]');
+  el.innerHTML=EMOJIS.map(emoji=>{
+    const row=rows.find(r=>r.emoji===emoji);
+    const count=row?row.count:0;
+    const hasReacted=voted.includes(emoji);
+    return `<button class="reaction-btn ${hasReacted?'reacted':''}" onclick="reactToChar('${charId}','${emoji}')">
+      ${emoji} <span class="reaction-count">${count}</span>
+    </button>`;
+  }).join('');
+}
+
+async function reactToChar(charId,emoji){
+  const key='reacted_'+charId;
+  const voted=JSON.parse(localStorage.getItem(key)||'[]');
+  if(voted.includes(emoji)){showToast('ALREADY REACTED WITH THIS');return;}
+  const rows=await fetchReactions(charId);
+  const existing=rows.find(r=>r.emoji===emoji);
+  const newCount=(existing?existing.count:0)+1;
+  await upsertReaction(charId,emoji,newCount);
+  voted.push(emoji);
+  localStorage.setItem(key,JSON.stringify(voted));
+  loadReactions(charId);
+}
+
+// ── COMMENTS ──────────────────────────────────────────
+async function loadComments(charId){
+  const el=document.getElementById(`comments-${charId}`);
+  if(!el)return;
+  const rows=await fetchComments(charId);
+  if(!rows.length){el.innerHTML=`<div class="no-comments">NO COMMENTS YET — BE THE FIRST</div>`;return;}
+  el.innerHTML=rows.map(c=>`<div class="comment-item">
+    <div class="comment-header">
+      <span class="comment-author">${c.author.toUpperCase()}</span>
+      <span>
+        <span class="comment-time">${timeAgo(c.created_at)}</span>
+        ${isAdmin?`<span class="comment-del" onclick="removeComment('${c.id}','${charId}')">✕</span>`:''}
+      </span>
+    </div>
+    <div class="comment-text">${c.text}</div>
+  </div>`).join('');
+}
+
+async function submitComment(charId){
+  const nameEl=document.getElementById(`cname-${charId}`);
+  const textEl=document.getElementById(`ctext-${charId}`);
+  const name=nameEl.value.trim();
+  const text=textEl.value.trim();
+  if(!name||!text){showToast('ENTER NAME AND COMMENT');return;}
+  await addComment(charId,name,text);
+  nameEl.value='';textEl.value='';
+  loadComments(charId);
+  showToast('COMMENT POSTED!');
+}
+
+async function removeComment(id,charId){
+  await deleteComment(id);
+  loadComments(charId);
+  showToast('DELETED');
+}
+
+function timeAgo(iso){
+  const diff=Date.now()-new Date(iso).getTime();
+  const m=Math.floor(diff/60000);
+  if(m<1)return'JUST NOW';
+  if(m<60)return`${m}M AGO`;
+  const h=Math.floor(m/60);
+  if(h<24)return`${h}H AGO`;
+  return`${Math.floor(h/24)}D AGO`;
 }
 
 function updateBreadcrumb(){
@@ -876,14 +1043,17 @@ async function addCharacter(){
   const status=document.getElementById('new-char-status').value;
   const parentId=document.getElementById('new-char-parent').value;
   const tiktok=document.getElementById('new-char-tiktok').value.trim();
+  const tiktok2=document.getElementById('new-char-tiktok2').value.trim();
+  const tiktok3=document.getElementById('new-char-tiktok3').value.trim();
+  const views=document.getElementById('new-char-views').value.trim().toUpperCase();
   const verdict=document.getElementById('new-char-verdict').value.trim().toUpperCase();
   const stats=getStats('new-stats-builder');
   if(!name){showToast('ENTER A NAME');return;}
   const parent=findNode(parentId,dbTree);if(!parent)return;
   if(!parent.children)parent.children=[];
-  parent.children.push({id:genId(),name,type:'file',status,icon,title,tiktok,verdict,stats,addedAt:Date.now()});
+  parent.children.push({id:genId(),name,type:'file',status,icon,title,tiktok,tiktok2,tiktok3,views,verdict,stats,addedAt:Date.now()});
   await saveDB();renderDB();renderManageDB();
-  ['new-char-name','new-char-icon','new-char-title','new-char-tiktok','new-char-verdict'].forEach(id=>document.getElementById(id).value='');
+  ['new-char-name','new-char-icon','new-char-title','new-char-tiktok','new-char-tiktok2','new-char-tiktok3','new-char-views','new-char-verdict'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('new-stats-builder').innerHTML='';showToast('CHARACTER ADDED');
 }
 
@@ -926,7 +1096,10 @@ function editCharacter(id){
         </select>
       </div>
     </div>
-    <div style="margin-bottom:8px"><div class="field-label">TIKTOK LINK</div><input class="field-input" id="ec-tiktok" value="${node.tiktok||''}"/></div>
+    <div style="margin-bottom:8px"><div class="field-label">TIKTOK LINK 1</div><input class="field-input" id="ec-tiktok" value="${node.tiktok||''}"/></div>
+    <div style="margin-bottom:8px"><div class="field-label">TIKTOK LINK 2</div><input class="field-input" id="ec-tiktok2" value="${node.tiktok2||''}"/></div>
+    <div style="margin-bottom:8px"><div class="field-label">TIKTOK LINK 3</div><input class="field-input" id="ec-tiktok3" value="${node.tiktok3||''}"/></div>
+    <div style="margin-bottom:8px"><div class="field-label">TOTAL VIEWS (E.G. 2.4M)</div><input class="field-input" id="ec-views" value="${node.views||''}"/></div>
     <div style="margin-bottom:8px"><div class="field-label">VERDICT</div><input class="field-input" id="ec-verdict" value="${node.verdict||''}"/></div>
     <div class="field-label" style="margin-bottom:6px">STATS</div>
     <div class="stats-builder" id="ec-stats-builder">${builderHtml}</div>
@@ -937,6 +1110,9 @@ function editCharacter(id){
     node.title=document.getElementById('ec-title').value.trim().toUpperCase();
     node.status=document.getElementById('ec-status').value;
     node.tiktok=document.getElementById('ec-tiktok').value.trim();
+    node.tiktok2=document.getElementById('ec-tiktok2').value.trim();
+    node.tiktok3=document.getElementById('ec-tiktok3').value.trim();
+    node.views=document.getElementById('ec-views').value.trim().toUpperCase();
     node.verdict=document.getElementById('ec-verdict').value.trim().toUpperCase();
     node.stats=getStats('ec-stats-builder');
     await saveDB();renderDB();renderManageDB();closeEditModal();showToast('UPDATED');

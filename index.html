@@ -523,7 +523,12 @@ async function autoFillCharacter() {
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-api-key': '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',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,

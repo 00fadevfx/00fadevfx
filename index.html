@@ -521,32 +521,19 @@ async function autoFillCharacter() {
   status.textContent = '⚡ SCANNING DATABASE... PLEASE WAIT...';
 
   try {
+    const payload = JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{
+        role: 'user',
+        content: `You are a database for an anime edit creator. Given the character "${query}", return ONLY a JSON object with these exact fields, no other text, no markdown backticks: {"name":"CHARACTER NAME IN CAPS","icon":"single relevant emoji","title":"THEIR TITLE OR ROLE IN CAPS","verdict":"COMBAT VERDICT: SHORT IMPACTFUL PHRASE IN CAPS.","stats":{"STAT1 LABEL":"STAT1 VALUE","STAT2 LABEL":"STAT2 VALUE","STAT3 LABEL":"STAT3 VALUE","STAT4 LABEL":"STAT4 VALUE"}} Stats should include QUIRK/POWER, ABILITY, RANK/TITLE, ALLEGIANCE. Keep all values concise and uppercase.`
+      }]
+    });
+
     const response = await fetch('https://tight-cloud-11ca.meverturtle.workers.dev/', {
       method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: `You are a database for an anime edit creator. Given the character "${query}", return ONLY a JSON object with these exact fields, no other text, no markdown:
-{
-  "name": "CHARACTER NAME IN CAPS",
-  "icon": "single relevant emoji",
-  "title": "THEIR TITLE OR ROLE IN CAPS",
-  "verdict": "COMBAT VERDICT: SHORT IMPACTFUL PHRASE IN CAPS.",
-  "stats": {
-    "STAT1 LABEL": "STAT1 VALUE",
-    "STAT2 LABEL": "STAT2 VALUE",
-    "STAT3 LABEL": "STAT3 VALUE",
-    "STAT4 LABEL": "STAT4 VALUE"
-  }
-}
-Stats should include things like QUIRK/POWER, ABILITY, RANK/TITLE, ALLEGIANCE or similar relevant fields for this character. Keep all values concise and uppercase.`
-        }]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: payload
     });
 
     const data = await response.json();

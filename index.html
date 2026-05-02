@@ -428,18 +428,16 @@ async function fetchSuggestions() {
 }
 async function upsertSuggestion(s) { await sbFetch('/rest/v1/suggestions', 'POST', [s]); }
 
-async function sendNotification(char, anime) {
-  try {
-    await fetch('https://ntfy.sh/fadevfxsnotifications', {
-      method: 'POST',
-      headers: {
-        'Title': '👾 New Suggestion on FADE.DB',
-        'Priority': 'high',
-        'Tags': 'bell'
-      },
-      body: `${char} — ${anime}`
-    });
-  } catch(e) { console.log('Notification failed', e); }
+function sendNotification(char, anime) {
+  fetch('https://ntfy.sh/fadevfxsnotifications', {
+    method: 'POST',
+    headers: {
+      'Title': '👾 New Suggestion on FADE.DB',
+      'Priority': 'high',
+      'Tags': 'bell'
+    },
+    body: `${char} — ${anime}`
+  }).then(r => console.log('Notification sent', r.status)).catch(e => console.log('Notification failed', e));
 }
 async function updateSuggestion(id, fields) { await sbFetch(`/rest/v1/suggestions?id=eq.${id}`, 'PATCH', fields); }
 async function deleteSuggestion(id) { await sbFetch(`/rest/v1/suggestions?id=eq.${id}`, 'DELETE'); }
@@ -678,7 +676,7 @@ async function submitSuggestion(){
     const id=genId();
     await upsertSuggestion({id,char,anime,votes:1,status:'pending',date:Date.now()});
     voted.add(id);saveVoted(voted);
-    await sendNotification(char, anime);
+    sendNotification(char, anime);
     showToast('SUBMITTED!');
   }
   document.getElementById('inp-char').value='';document.getElementById('inp-anime').value='';
